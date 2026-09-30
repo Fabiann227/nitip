@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="id" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Masuk ke Akun Nitip - Langkah 4</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#00462e",
+            "primary-container": "#006041",
+            "primary-fixed": "#a4f3ca",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#8ad8b1",
+            "secondary": "#246b3b",
+            "secondary-container": "#e8f8ec",
+            "on-secondary-container": "#14532d",
+            "tertiary": "#004815",
+            "surface": "#f8fafc",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f1f5f9",
+            "surface-container": "#e2e8f0",
+            "surface-container-high": "#cbd5e1",
+            "on-surface": "#0f172a",
+            "on-surface-variant": "#475569",
+            "outline": "#94a3b8",
+            "outline-variant": "#cbd5e1",
+          },
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "Inter", "sans-serif"],
+            body: ["Inter", "sans-serif"],
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-[#f8fafc] font-body text-slate-800 antialiased min-h-screen flex flex-col">
+<!-- Main Container: fully responsive on desktop max-w-6xl & mobile -->
+<div class="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex flex-col min-h-screen justify-between items-center gap-6 sm:gap-8"><header class="w-full flex items-center justify-center py-2"><a class="flex items-center justify-center py-1" href="#"><img alt="Nitip Logo" class="h-12 sm:h-14 md:h-16 lg:h-20 w-auto object-contain transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4xIx46s47cYhvuJe8heo3mpIXIHyOW0b0ntkEIfbt306K2vCWDsS_GEwTqLtN5O44ZDDgZ0giimtwV4tImN7c8SXJPfDvwkaha1iD20tg1X3s7kjtVtUN7oOD6sri4g7iCFnxV262XO-QOlAzEoDZYxSJFsgufpN_gbLAGffid0FbGLRcPKB8wEyUaGhqI-dnlMaYKjVNARoeOTwlmjOvz3nPUm4g1zm1Qrk1xibYAzY979TiiekeRs1oqlvQQG9DuA"></a></header><main class="w-full mx-auto flex flex-col items-center max-w-xl my-auto"><section class="w-full bg-white border border-slate-200/80 rounded-2xl shadow-sm p-8 flex flex-col"><div class="text-center mb-6"><h1 class="text-2xl font-bold font-sans text-slate-900 mb-2">Masuk ke Akun Nitip</h1><p class="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">Masuk dengan email kampus terverifikasi untuk mulai titip dan antar pesanan.</p></div><form class="flex flex-col gap-5 w-full" onsubmit="event.preventDefault()"><div><label class="block font-medium text-slate-800 text-sm mb-1.5" for="email-input">Email Kampus (.ac.id)</label><div class="relative flex items-center"><span class="material-symbols-outlined absolute -left-1 ml-4 text-slate-400 text-xl pointer-events-none">mail</span><input class="w-full bg-white border border-slate-200 rounded-xl pl-11 pr-4 py-3 text-slate-800 text-sm focus:border-[#006041] focus:ring-1 focus:ring-[#006041] outline-none transition-all" id="email-input" placeholder="nama.mahasiswa@student.kampus.ac.id" required="" type="email"></div></div><div><div class="flex items-center justify-between mb-1.5"><label class="font-medium text-slate-800 text-sm" for="password-input">Kata Sandi</label><a class="text-sm font-medium text-[#006041] hover:underline" href="#">Lupa kata sandi?</a></div><div class="relative flex items-center"><span class="material-symbols-outlined absolute -left-1 ml-4 text-slate-400 text-xl pointer-events-none">lock</span><input class="w-full bg-white border border-slate-200 rounded-xl pl-11 pr-11 py-3 text-slate-800 text-sm focus:border-[#006041] focus:ring-1 focus:ring-[#006041] outline-none transition-all" id="password-input" placeholder="Masukkan kata sandi akun" required="" type="password"><button class="absolute right-3 text-slate-400 hover:text-slate-600 flex items-center justify-center" type="button"><span class="material-symbols-outlined text-xl">visibility</span></button></div></div><div class="flex items-center justify-between pt-0.5"><label class="flex items-center gap-2 cursor-pointer"><input class="w-4 h-4 rounded border-slate-200 text-[#006041] focus:ring-[#006041] cursor-pointer" type="checkbox"><span class="text-sm text-slate-600">Ingat saya di perangkat ini</span></label></div><button class="w-full h-12 min-h-[48px] rounded-xl bg-[#006041] hover:bg-[#00462e] text-white font-sans font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-[0.99] cursor-pointer mt-2" type="submit"><span class="">Masuk ke Nitip</span><span class="material-symbols-outlined text-xl">arrow_forward</span></button><div class="text-center pt-2"><p class="text-xs sm:text-sm text-slate-600">Belum punya akun? <a class="font-semibold text-[#006041] hover:underline" href="#">Daftar di sini</a></p></div></form></section></main><footer class="w-full text-center py-4"><p class="text-xs text-slate-400 font-medium">© 2026 Nitip • Versi Aplikasi V.0.1</p></footer></div>
+
+
+
+
+</body></html>
