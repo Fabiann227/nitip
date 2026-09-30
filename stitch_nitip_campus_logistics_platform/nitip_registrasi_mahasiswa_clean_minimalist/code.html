@@ -1,0 +1,90 @@
+<!DOCTYPE html><html lang="id" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Daftar Akun Mahasiswa - Nitip</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#00462e",
+            "primary-container": "#006041",
+            "primary-fixed": "#a4f3ca",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#8ad8b1",
+            "secondary": "#246b3b",
+            "secondary-container": "#e8f8ec",
+            "on-secondary-container": "#14532d",
+            "tertiary": "#004815",
+            "surface": "#f8fafc",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f1f5f9",
+            "surface-container": "#e2e8f0",
+            "surface-container-high": "#cbd5e1",
+            "on-surface": "#0f172a",
+            "on-surface-variant": "#475569",
+            "outline": "#94a3b8",
+            "outline-variant": "#cbd5e1",
+          },
+          fontFamily: {
+            sans: ["Plus Jakarta Sans", "Inter", "sans-serif"],
+            body: ["Inter", "sans-serif"],
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    @layer base {
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="bg-[#f8fafc] font-body text-slate-800 antialiased min-h-screen flex flex-col">
+<!-- Main Container: fully responsive on desktop max-w-6xl & mobile -->
+<div class="w-full max-w-[440px] mx-auto px-4 py-8 flex flex-col items-center min-h-screen">
+<!-- 1. Header / Navbar -->
+<header class="w-full flex items-center justify-center mb-6"><a class="flex items-center justify-center py-1" href="#"><img alt="Nitip Logo" class="h-10 sm:h-11 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsbRw1up4r501wRnT7sMyld9AlqoLl1U_daAYZMCUEr3kqAD19y83MdPtg_nQ0046VbZMguzSvM5kc8H0g30RemgiobZgOaoZf7DVVd3rnt5Pw4h8eFMZAIAYOoFYIYo9nWxarOGTYlX2vx0zZa29di6tIYwGiedAEoI753WN4AeZWBdWx540ePHou-Qi-Q-EWztoowNWhrcZkbjb-LBC_Tyc1qK9O6Ui3rE9mN0IaWusRt9QyMqcpvwratg6XIKCHuQ"></a></header>
+<!-- 2. Stepper Navigasi Alur Registrasi -->
+<nav class="w-[352px] mx-auto bg-white border border-slate-200/80 rounded-2xl px-6 py-3.5 mb-6 shadow-sm"><div class="relative w-full pb-5"><div class="absolute top-2.5 left-0 right-0 h-[2px] bg-slate-200 -translate-y-1/2 pointer-events-none"></div><div class="relative flex justify-between items-center w-full"><div class="relative flex flex-col items-center"><div class="w-5 h-5 min-w-[20px] min-h-[20px] rounded-full border-2 border-[#006041] bg-white text-[#006041] flex items-center justify-center font-bold text-[11px] shadow-sm z-10">1</div><span class="absolute top-6 left-1/2 -translate-x-1/2 text-[11px] font-bold text-slate-900 font-sans leading-none whitespace-nowrap">Registrasi</span></div><div class="relative flex flex-col items-center"><div class="w-5 h-5 min-w-[20px] min-h-[20px] rounded-full border border-slate-300 bg-slate-100 text-slate-400 flex items-center justify-center font-medium text-[11px] z-10">2</div><span class="absolute top-6 left-1/2 -translate-x-1/2 text-[11px] font-medium text-slate-400 font-sans leading-none whitespace-nowrap">Verifikasi</span></div><div class="relative flex flex-col items-center"><div class="w-5 h-5 min-w-[20px] min-h-[20px] rounded-full border border-slate-300 bg-slate-100 text-slate-400 flex items-center justify-center font-medium text-[11px] z-10">3</div><span class="absolute top-6 left-1/2 -translate-x-1/2 text-[11px] font-medium text-slate-400 font-sans leading-none whitespace-nowrap">Terverifikasi</span></div></div></div></nav>
+<!-- 3. Main Content: Split Grid Layout (Form 7 Cols + Sidebar 5 Cols) -->
+<main class="w-full"><section class="w-full bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm flex flex-col"><div class="text-center flex flex-col items-center mb-6"><h1 class="text-slate-900 font-sans font-bold text-[22px] tracking-tight leading-tight">Daftar Akun Nitip</h1><p class="text-slate-500 text-[13px] mt-1">Khusus mahasiswa terverifikasi (*.ac.id)</p></div><form class="flex flex-col" id="registerForm" onsubmit="event.preventDefault();"><div class="flex flex-col"><span class="text-[12px] font-semibold tracking-wider text-slate-500 uppercase mb-3">DATA DIRI</span><div class="flex flex-col gap-4"><div class="flex flex-col gap-1.5"><label class="text-slate-800 text-[13px] font-medium flex items-center justify-between" for="fullName"><span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-slate-400 text-[18px]">person</span>Nama Lengkap</span><span class="text-emerald-700 text-xs font-normal">(Sesuai KTM)</span></label><div class="relative flex items-center"><input class="w-full h-11 px-3.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-sm placeholder:text-slate-400" id="fullName" placeholder="Nama lengkap sesuai KTM" required="" type="text"></div></div><div class="flex flex-col gap-1.5"><label class="text-slate-800 text-[13px] font-medium flex items-center gap-1.5" for="studentNim"><span class="material-symbols-outlined text-slate-400 text-[18px]">badge</span>NIM / NPM</label><div class="relative flex items-center"><input class="w-full h-11 px-3.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-sm placeholder:text-slate-400" id="studentNim" maxlength="20" placeholder="Nomor Induk Mahasiswa" required="" type="text"></div></div><div class="flex flex-col gap-1.5"><label class="text-slate-800 text-[13px] font-medium flex items-center gap-1.5" for="campusSelect"><span class="material-symbols-outlined text-slate-400 text-[18px]">school</span>Pilih Universitas</label><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-3.5 text-slate-400 text-xl pointer-events-none select-none">search</span><select class="w-full h-11 pl-11 pr-10 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition appearance-none shadow-sm cursor-pointer" id="campusSelect"><option disabled="" selected="" value="">Cari &amp; pilih universitas...</option><option value="UI">Universitas Indonesia (UI)</option><option value="ITB">Institut Teknologi Bandung (ITB)</option><option value="UGM">Universitas Gadjah Mada (UGM)</option><option value="UNPAD">Universitas Padjadjaran (UNPAD)</option><option value="ITS">Institut Teknologi Sepuluh Nopember (ITS)</option><option value="UNAIR">Universitas Airlangga (UNAIR)</option><option value="UNDIP">Universitas Diponegoro (UNDIP)</option><option value="UB">Universitas Brawijaya (UB)</option><option value="OTHER">Kampus Lainnya (*.ac.id)</option></select><span class="material-symbols-outlined absolute right-3 text-slate-400 pointer-events-none text-xl select-none">expand_more</span></div></div></div></div><div class="flex flex-col mt-6"><span class="text-[12px] font-semibold tracking-wider text-slate-500 uppercase mb-3">KONTAK &amp; KEAMANAN</span><div class="flex flex-col gap-4"><div class="flex flex-col gap-1.5"><label class="text-slate-800 text-[13px] font-medium flex items-center gap-1.5" for="campusEmail"><span class="material-symbols-outlined text-slate-400 text-[18px]">mail</span>Email Kampus (.ac.id)</label><div class="relative flex items-center"><input class="w-full h-11 px-3.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-sm placeholder:text-slate-400" id="campusEmail" placeholder="nama@student.kampus.ac.id" required="" type="email"></div></div><div class="flex flex-col gap-1.5"><label class="text-slate-800 text-[13px] font-medium flex items-center gap-1.5" for="whatsappNumber"><span class="material-symbols-outlined text-slate-400 text-[18px]">chat</span>Nomor WhatsApp</label><div class="relative flex items-center"><input class="w-full h-11 px-3.5 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-sm placeholder:text-slate-400" id="whatsappNumber" placeholder="08xxxxxxxxxx" required="" type="tel"></div></div><div class="flex flex-col gap-1.5"><label class="text-slate-800 text-[13px] font-medium flex items-center gap-1.5" for="passwordField"><span class="material-symbols-outlined text-slate-400 text-[18px]">lock</span>Kata Sandi</label><div class="relative flex items-center"><input class="w-full h-11 pl-3.5 pr-11 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-sm placeholder:text-slate-400" id="passwordField" placeholder="Minimal 8 karakter" required="" type="password"><button class="absolute right-3.5 text-slate-400 hover:text-slate-700 flex items-center focus:outline-none transition-colors" type="button"><span class="material-symbols-outlined text-xl">visibility</span></button></div><div class="flex items-center gap-1.5 mt-1"><div class="flex-1 h-1 rounded-full bg-emerald-600"></div><div class="flex-1 h-1 rounded-full bg-emerald-600"></div><div class="flex-1 h-1 rounded-full bg-slate-200"></div></div></div><div class="flex flex-col gap-1.5"><label class="text-slate-800 text-[13px] font-medium flex items-center gap-1.5" for="confirmPassword"><span class="material-symbols-outlined text-slate-400 text-[18px]">lock_reset</span>Konfirmasi Kata Sandi</label><div class="relative flex items-center"><input class="w-full h-11 pl-3.5 pr-11 rounded-lg border border-slate-200 bg-white text-slate-800 text-sm focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none transition shadow-sm placeholder:text-slate-400" id="confirmPassword" placeholder="Ulangi kata sandi" required="" type="password"><button class="absolute right-3.5 text-slate-400 hover:text-slate-700 flex items-center focus:outline-none transition-colors" type="button"><span class="material-symbols-outlined text-xl">visibility</span></button></div></div></div></div><div class="flex items-center gap-2.5 pt-4"><div class="flex items-center justify-center p-1 cursor-pointer"><input checked="" class="w-4 h-4 rounded text-emerald-700 border-slate-300 focus:ring-emerald-600 focus:ring-offset-0 cursor-pointer shrink-0" id="termsAgreement" type="checkbox"></div><label class="text-slate-600 text-xs leading-snug cursor-pointer select-none" for="termsAgreement">Saya menyetujui <a class="text-emerald-800 font-semibold hover:underline" href="#">Ketentuan Layanan</a> &amp; <a class="text-emerald-800 font-semibold hover:underline" href="#">Kebijakan Privasi</a></label></div><button class="w-full h-12 rounded-lg bg-[#006041] hover:bg-[#00462e] text-white font-sans font-semibold text-[15px] flex items-center justify-center gap-2 shadow-sm hover:shadow transition-all active:scale-[0.99] cursor-pointer mt-4" type="submit"><span class="">Daftar &amp; Lanjut Verifikasi</span><span class="material-symbols-outlined text-xl">arrow_forward</span></button><div class="flex items-center justify-center gap-1 text-[13px] text-slate-500 pt-4"><span class="">Sudah punya akun?</span><a class="text-emerald-800 font-semibold hover:underline inline-flex items-center" href="#">Masuk di sini</a></div></form></section></main>
+<!-- 4. Footer Kompak -->
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>
