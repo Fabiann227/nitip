@@ -33,7 +33,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/layanan', [HomeController::class, 'services'])->name('services');
+Route::redirect('/layanan', '/#layanan')->name('services');
 
 /*
 |--------------------------------------------------------------------------
