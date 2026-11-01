@@ -28,10 +28,11 @@ class SmokeRoutesTest extends TestCase
     #[Test]
     public function public_pages_render_for_guests(): void
     {
-        foreach (['home', 'services', 'login', 'register', 'password.request'] as $route) {
+        foreach (['home', 'login', 'register', 'password.request'] as $route) {
             $this->get(route($route))->assertOk();
         }
 
+        $this->get(route('services'))->assertRedirect('/#layanan');
         $this->get(route('password.reset', ['token' => 'abc', 'email' => 'x@y.ac.id']))->assertOk();
     }
 
@@ -58,7 +59,6 @@ class SmokeRoutesTest extends TestCase
             route('settings.payment'),
             route('users.show', $willy),
             route('home'),
-            route('services'),
         ];
 
         foreach (Order::query()->involving($willy)->get() as $order) {

@@ -5,8 +5,9 @@
     $isActive = fn (string|array $patterns) => request()->routeIs($patterns);
 @endphp
 <x-layouts.base :title="$title" body-class="bg-surface">
-    <header class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-surface-highest/60 shadow-[0_1px_4px_rgba(0,0,0,0.03)]">
-        <div class="h-16 max-w-[1200px] mx-auto px-4 lg:px-8 flex items-center justify-between gap-4">
+    <header class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b border-surface-highest/60 shadow-[0_1px_4px_rgba(0,0,0,0.03)]"
+            x-data="{ mobileMenuOpen: false }">
+        <div class="h-16 max-w-[1280px] mx-auto px-4 lg:px-8 flex items-center justify-between gap-3 sm:gap-4">
             <a href="{{ $user ? route('dashboard') : route('home') }}" class="flex items-center shrink-0" aria-label="Beranda Nitip">
                 <x-logo />
             </a>
@@ -81,17 +82,79 @@
                     </x-ui.dropdown>
                 </div>
             @else
-                <nav class="hidden md:flex items-center gap-1">
-                    <a href="{{ route('home') }}#cara-kerja" class="nav-link">Cara kerja</a>
-                    <a href="{{ route('services') }}" class="nav-link {{ $isActive('services') ? 'nav-link-active' : '' }}">Layanan & tarif</a>
-                    <a href="{{ route('home') }}#feed" class="nav-link">Titipan aktif</a>
+                <nav class="hidden md:flex items-center gap-5 lg:gap-6">
+                    <a href="{{ route('home') }}#cerita-nitip" class="relative py-1.5 px-0.5 text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors group">
+                        <span>Cerita Nitip</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 ease-out group-hover:w-full"></span>
+                    </a>
+                    <a href="{{ route('home') }}#cara-kerja" class="relative py-1.5 px-0.5 text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors group">
+                        <span>Cara Kerja</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 ease-out group-hover:w-full"></span>
+                    </a>
+                    <a href="{{ route('home') }}#layanan" class="relative py-1.5 px-0.5 text-sm font-semibold text-on-surface-variant hover:text-primary transition-colors group">
+                        <span>Layanan & Tarif</span>
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary rounded-full transition-all duration-300 ease-out group-hover:w-full"></span>
+                    </a>
                 </nav>
                 <div class="flex items-center gap-2">
-                    <a href="{{ route('login') }}" class="btn btn-ghost btn-sm">Masuk</a>
-                    <a href="{{ route('register') }}" class="btn btn-primary btn-sm">Daftar</a>
+                    <!-- Desktop & Tablet Auth Buttons (Hidden on mobile) -->
+                    <a href="{{ route('login') }}" class="hidden md:inline-flex btn btn-sm bg-slate-100 hover:bg-slate-200/80 text-on-surface font-semibold border border-slate-200/80 shadow-2xs px-4">Masuk</a>
+                    <a href="{{ route('register') }}" class="hidden md:inline-flex btn btn-primary btn-sm px-4">Daftar</a>
+
+                    <!-- Hamburger Button on Mobile (< md) -->
+                    <button type="button" 
+                            @click="mobileMenuOpen = !mobileMenuOpen" 
+                            class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl text-on-surface hover:text-primary hover:bg-slate-100 transition-colors focus:outline-none" 
+                            aria-label="Toggle navigation menu"
+                            :aria-expanded="mobileMenuOpen">
+                        <span class="material-symbols-outlined text-[26px]" x-show="!mobileMenuOpen">menu</span>
+                        <span class="material-symbols-outlined text-[26px]" x-show="mobileMenuOpen" style="display: none;">close</span>
+                    </button>
                 </div>
             @endauth
         </div>
+
+        @guest
+            <!-- Mobile Menu Dropdown Panel -->
+            <div x-show="mobileMenuOpen" 
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 -translate-y-2"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 -translate-y-2"
+                 @click.outside="mobileMenuOpen = false"
+                 @keydown.escape.window="mobileMenuOpen = false"
+                 class="md:hidden bg-white/98 backdrop-blur-lg border-b border-slate-200 shadow-xl px-4 pt-3 pb-5"
+                 style="display: none;">
+                <nav class="flex flex-col space-y-1 mb-4">
+                    <a href="{{ route('home') }}#cerita-nitip" 
+                       @click="mobileMenuOpen = false"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-on-surface hover:text-primary hover:bg-emerald-50/70 transition-colors">
+                        <span class="material-symbols-outlined text-[20px] text-primary">auto_stories</span>
+                        <span>Cerita Nitip</span>
+                    </a>
+                    <a href="{{ route('home') }}#cara-kerja" 
+                       @click="mobileMenuOpen = false"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-on-surface hover:text-primary hover:bg-emerald-50/70 transition-colors">
+                        <span class="material-symbols-outlined text-[20px] text-primary">sync_alt</span>
+                        <span>Cara Kerja</span>
+                    </a>
+                    <a href="{{ route('home') }}#layanan" 
+                       @click="mobileMenuOpen = false"
+                       class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-on-surface hover:text-primary hover:bg-emerald-50/70 transition-colors">
+                        <span class="material-symbols-outlined text-[20px] text-primary">receipt_long</span>
+                        <span>Layanan & Tarif</span>
+                    </a>
+                </nav>
+
+                <!-- Auth Buttons inside Mobile Menu -->
+                <div class="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2.5">
+                    <a href="{{ route('login') }}" class="btn btn-sm bg-slate-100 hover:bg-slate-200/80 text-on-surface font-semibold border border-slate-200/80 shadow-2xs justify-center">Masuk</a>
+                    <a href="{{ route('register') }}" class="btn btn-primary btn-sm justify-center">Daftar</a>
+                </div>
+            </div>
+        @endguest
     </header>
 
     <main class="flex-1 w-full pt-16 {{ auth()->check() ? 'pb-20 lg:pb-0' : '' }}">
