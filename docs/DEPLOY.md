@@ -28,22 +28,47 @@ ssh -i ~/hendra root@76.13.22.7 'cd /var/www/nitip \
 
 Reset data demo di server: `php artisan migrate:fresh --seed --force` (menghapus semua data!).
 
-## Email OTP via Gmail (langkah yang tersisa, dikerjakan manual)
+## Email OTP (langkah yang tersisa, dikerjakan manual)
 
-`MAIL_HOST=smtp.gmail.com` dan `MAIL_PORT=587` sudah terisi; yang belum hanya akun pengirimnya.
+Alur register → OTP → verifikasi sudah diuji end-to-end di server dan berfungsi; tinggal akun pengirim email.
 
-1. Buka https://myaccount.google.com → Security → aktifkan **2-Step Verification** → menu **App passwords** → buat password aplikasi (16 huruf) untuk "Mail".
+### Jalur A (disarankan): Brevo — gratis 300 email/hari, tanpa 2FA/app password
+
+1. Daftar di https://www.brevo.com dan konfirmasi akun.
+2. **Senders & IP → Senders** → tambahkan alamat emailmu sebagai pengirim → verifikasi via kode.
+3. **SMTP & API → SMTP** → **Generate SMTP key**; catat login SMTP (mis. `8xxxxx001@smtp-brevo.com`) dan key-nya.
+4. Masuk ke server dan edit `.env` (jangan taruh key ini di chat/repo):
+   ```bash
+   ssh -i ~/hendra root@76.13.22.7
+   nano /var/www/nitip/.env
+   #   MAIL_MAILER=smtp
+   #   MAIL_HOST=smtp-relay.brevo.com
+   #   MAIL_PORT=587
+   #   MAIL_USERNAME=<login SMTP Brevo>
+   #   MAIL_PASSWORD=<SMTP key Brevo>
+   #   MAIL_FROM_ADDRESS="emailkamu@gmail.com"   <- alamat yang diverifikasi di langkah 2
+   cd /var/www/nitip && php artisan config:cache
+   ```
+
+### Jalur B: Gmail App Password
+
+1. Aktifkan **2-Step Verification**, lalu buka langsung https://myaccount.google.com/apppasswords → buat password aplikasi (16 huruf).
 2. Masuk ke server dan edit `.env` (jangan taruh password ini di chat/repo):
    ```bash
    ssh -i ~/hendra root@76.13.22.7
    nano /var/www/nitip/.env
    #   MAIL_MAILER=smtp
+   #   MAIL_HOST=smtp.gmail.com
+   #   MAIL_PORT=587
    #   MAIL_USERNAME=emailkamu@gmail.com
    #   MAIL_PASSWORD="abcd efgh ijkl mnop"   <- App Password 16 huruf
    #   MAIL_FROM_ADDRESS="emailkamu@gmail.com"
-   php -r '' # lalu:
    cd /var/www/nitip && php artisan config:cache
    ```
+
+Catatan: mailer berbasis API (Resend/Mailgun/Postmark/SES) butuh verifikasi domain sendiri — tidak bisa
+dengan `sslip.io`, jadi tidak dipakai di sini. Untuk sekadar demo tanpa pengiriman nyata, bisa juga
+Mailtrap sandbox (email masuk ke inbox uji Mailtrap).
 3. Uji kirim tanpa harus registrasi:
    ```bash
    php artisan tinker --execute="Illuminate\Support\Facades\Notification::route('mail','emailkamu@gmail.com')->notify(new App\Notifications\VerifyEmailOtp('123456', 10));"
