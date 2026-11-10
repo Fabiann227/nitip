@@ -32,7 +32,21 @@ Reset data demo di server: `php artisan migrate:fresh --seed --force` (menghapus
 
 Alur register → OTP → verifikasi sudah diuji end-to-end di server dan berfungsi; tinggal akun pengirim email.
 
-### Jalur A (disarankan): Brevo — gratis 300 email/hari, tanpa 2FA/app password
+### Jalur yang dipakai: Mailjet — gratis 200 email/hari
+
+Akun Mailjet sudah dibuat; sender `hannfarhan9@gmail.com` berstatus Active dan `.env` server sudah
+terisi `MAIL_HOST=in-v3.mailjet.com` + `MAIL_PORT=587`. Kredensial ada di
+https://app.mailjet.com/account/apikeys (SMTP username = **API Key**, password = **Secret Key**;
+Secret Key bisa di-reset dari halaman itu kalau hilang). Tinggal jalankan dari laptop, ganti dua
+placeholder dengan nilai dari halaman tersebut:
+
+```powershell
+ssh -i ~/hendra root@76.13.22.7 "cd /var/www/nitip && sed -i 's/TEMPEL_API_KEY/<API Key>/; s/TEMPEL_SECRET_KEY/<Secret Key>/; s/^MAIL_MAILER=log/MAIL_MAILER=smtp/' .env && php artisan config:cache"
+```
+
+Catatan: karena pengirimnya gmail.com (tanpa SPF/DKIM domain sendiri), email bisa masuk folder Spam.
+
+### Jalur B: Brevo — gratis 300 email/hari, tanpa 2FA/app password
 
 1. Daftar di https://www.brevo.com dan konfirmasi akun.
 2. **Senders & IP → Senders** → tambahkan alamat emailmu sebagai pengirim → verifikasi via kode.
@@ -50,7 +64,7 @@ Alur register → OTP → verifikasi sudah diuji end-to-end di server dan berfun
    cd /var/www/nitip && php artisan config:cache
    ```
 
-### Jalur B: Gmail App Password
+### Jalur C: Gmail App Password
 
 1. Aktifkan **2-Step Verification**, lalu buka langsung https://myaccount.google.com/apppasswords → buat password aplikasi (16 huruf).
 2. Masuk ke server dan edit `.env` (jangan taruh password ini di chat/repo):
