@@ -1,0 +1,75 @@
+{
+ "base": "https://nitip.76-13-22-7.sslip.io",
+ "when": "2026-11-10T19:05:20",
+ "landing": {
+  "n": 300,
+  "err": 1,
+  "p50": 0.619,
+  "p95": 4.957,
+  "p99": 31.48,
+  "max": 64.819,
+  "mean": 1.742
+ },
+ "browse": {
+  "n": 120,
+  "err": 0,
+  "p50": 0.533,
+  "p95": 2.49,
+  "p99": 3.312,
+  "max": 4.181,
+  "mean": 0.835
+ },
+ "post_request": {
+  "n": 60,
+  "err": 0,
+  "p50": 0.266,
+  "p95": 1.118,
+  "p99": 2.433,
+  "max": 2.433,
+  "mean": 0.417
+ },
+ "claim": {
+  "n": 50,
+  "err": 7,
+  "p50": 0.683,
+  "p95": 2.062,
+  "p99": 2.677,
+  "max": 2.677,
+  "mean": 0.78
+ },
+ "landing_rps": 4.6,
+ "race": [
+  {
+   "round": 1,
+   "code": "NT-MSMS4P",
+   "winners": 1,
+   "racers": 10
+  },
+  {
+   "round": 2,
+   "code": "NT-2RWMSU",
+   "winners": 1,
+   "racers": 10
+  },
+  {
+   "round": 3,
+   "code": "NT-2KGM2M",
+   "winners": 1,
+   "racers": 10
+  },
+  {
+   "round": 4,
+   "code": "NT-LZ878Y",
+   "winners": 1,
+   "racers": 10
+  },
+  {
+   "round": 5,
+   "code": "NT-V2CVFR",
+   "winners": 1,
+   "racers": 10
+  }
+ ],
+ "total_requests": 530,
+ "total_errors": 8
+}
