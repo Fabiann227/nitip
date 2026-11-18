@@ -28,25 +28,25 @@ ssh -i ~/hendra root@76.13.22.7 'cd /var/www/nitip \
 
 Reset data demo di server: `php artisan migrate:fresh --seed --force` (menghapus semua data!).
 
-## Email OTP (langkah yang tersisa, dikerjakan manual)
+## Email OTP
 
-Alur register → OTP → verifikasi sudah diuji end-to-end di server dan berfungsi; tinggal akun pengirim email.
+Terpasang (18 Nov 2026): **Gmail SMTP + App Password** dengan akun Gmail khusus project sebagai
+pengirim. Isi `.env` server: `MAIL_MAILER=smtp`, `MAIL_HOST=smtp.gmail.com`, `MAIL_PORT=587`,
+`MAIL_USERNAME` & `MAIL_FROM_ADDRESS` = alamat Gmail project, `MAIL_PASSWORD` = App Password 16 huruf
+(buat ulang di https://myaccount.google.com/apppasswords bila hilang; jangan taruh di chat/repo).
+Alur register → OTP → verifikasi teruji end-to-end; karena email keluar asli dari server Google,
+SPF/DKIM selaras sehingga biasanya masuk Inbox, bukan Spam.
 
-### Jalur yang dipakai: Mailjet — gratis 200 email/hari
+### Jalur alternatif A: Mailjet — gratis 200 email/hari
 
-Akun Mailjet sudah dibuat; sender `hannfarhan9@gmail.com` berstatus Active dan `.env` server sudah
-terisi `MAIL_HOST=in-v3.mailjet.com` + `MAIL_PORT=587`. Kredensial ada di
+Akun Mailjet sudah ada; sender `hannfarhan9@gmail.com` berstatus Active. Kredensial di
 https://app.mailjet.com/account/apikeys (SMTP username = **API Key**, password = **Secret Key**;
-Secret Key bisa di-reset dari halaman itu kalau hilang). Tinggal jalankan dari laptop, ganti dua
-placeholder dengan nilai dari halaman tersebut:
+Secret Key bisa di-reset dari halaman itu). Set `MAIL_HOST=in-v3.mailjet.com`, port 587.
+Catatan pengalaman: karena From gmail.com tapi dikirim via server Mailjet (SPF/DKIM tidak selaras),
+email cenderung masuk folder Junk; akun baru juga sempat menahan antrean ("queued") beberapa hari
+selama masa vetting.
 
-```powershell
-ssh -i ~/hendra root@76.13.22.7 "cd /var/www/nitip && sed -i 's/TEMPEL_API_KEY/<API Key>/; s/TEMPEL_SECRET_KEY/<Secret Key>/; s/^MAIL_MAILER=log/MAIL_MAILER=smtp/' .env && php artisan config:cache"
-```
-
-Catatan: karena pengirimnya gmail.com (tanpa SPF/DKIM domain sendiri), email bisa masuk folder Spam.
-
-### Jalur B: Brevo — gratis 300 email/hari, tanpa 2FA/app password
+### Jalur alternatif B: Brevo — gratis 300 email/hari, tanpa 2FA/app password
 
 1. Daftar di https://www.brevo.com dan konfirmasi akun.
 2. **Senders & IP → Senders** → tambahkan alamat emailmu sebagai pengirim → verifikasi via kode.
@@ -64,7 +64,7 @@ Catatan: karena pengirimnya gmail.com (tanpa SPF/DKIM domain sendiri), email bis
    cd /var/www/nitip && php artisan config:cache
    ```
 
-### Jalur C: Gmail App Password
+### Langkah pemasangan jalur aktif (Gmail App Password)
 
 1. Aktifkan **2-Step Verification**, lalu buka langsung https://myaccount.google.com/apppasswords → buat password aplikasi (16 huruf).
 2. Masuk ke server dan edit `.env` (jangan taruh password ini di chat/repo):
@@ -80,16 +80,19 @@ Catatan: karena pengirimnya gmail.com (tanpa SPF/DKIM domain sendiri), email bis
    cd /var/www/nitip && php artisan config:cache
    ```
 
-Catatan: mailer berbasis API (Resend/Mailgun/Postmark/SES) butuh verifikasi domain sendiri — tidak bisa
-dengan `sslip.io`, jadi tidak dipakai di sini. Untuk sekadar demo tanpa pengiriman nyata, bisa juga
-Mailtrap sandbox (email masuk ke inbox uji Mailtrap).
 3. Uji kirim tanpa harus registrasi:
    ```bash
    php artisan tinker --execute="Illuminate\Support\Facades\Notification::route('mail','emailkamu@gmail.com')->notify(new App\Notifications\VerifyEmailOtp('123456', 10));"
    ```
    Cek inbox; kalau masuk, alur registrasi → OTP → verifikasi sudah hidup beneran.
 
-Sebelum langkah ini selesai, `MAIL_MAILER` masih `log`: registrasi akun baru di server akan macet di halaman OTP (kodenya hanya tertulis di `storage/logs/laravel.log`). Akun demo seeder sudah terverifikasi, jadi demo login tetap jalan.
+Catatan: mailer berbasis API (Resend/Mailgun/Postmark/SES) butuh verifikasi domain sendiri — tidak bisa
+dengan `sslip.io`, jadi tidak dipakai di sini. Untuk sekadar demo tanpa pengiriman nyata, bisa juga
+Mailtrap sandbox (email masuk ke inbox uji Mailtrap).
+
+Kalau `MAIL_MAILER` dikembalikan ke `log` (mis. saat ganti penyedia), registrasi akun baru akan macet
+di halaman OTP — kodenya hanya tertulis di `storage/logs/laravel.log`. Akun demo seeder sudah
+terverifikasi, jadi demo login tetap jalan.
 
 ## Akun demo (password: `password`)
 
