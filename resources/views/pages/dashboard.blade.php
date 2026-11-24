@@ -38,7 +38,7 @@
                             <p class="text-sm font-semibold text-on-surface truncate">{{ $order->title }}</p>
                             <p class="text-xs text-on-surface-variant">
                                 @switch($order->status)
-                                    @case(\App\Enums\OrderStatus::AwaitingPayment) Transfer {{ rupiah($order->estimatedTotal()) }} ke relawan dan unggah bukti @break
+                                    @case(\App\Enums\OrderStatus::AwaitingPayment) Transfer {{ rupiah($order->estimatedTotal()) }} ke relawan dan upload bukti @break
                                     @case(\App\Enums\OrderStatus::Delivered) Konfirmasi bahwa pesanan sudah kamu terima @break
                                     @case(\App\Enums\OrderStatus::PaymentSubmitted) Verifikasi bukti transfer dari penitip @break
                                     @case(\App\Enums\OrderStatus::Paid) Pembayaran masuk, mulai proses pesanan @break

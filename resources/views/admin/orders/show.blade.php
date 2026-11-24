@@ -3,7 +3,7 @@
         @if (! $order->status->isTerminal())
             <x-ui.confirm-form :action="route('admin.orders.cancel', $order)" title="Batalkan pesanan sebagai admin?" message="Gunakan untuk pembatalan darurat. Jika pembayaran sudah diverifikasi, pesanan ditandai perlu refund. Tindakan dicatat di audit trail." confirm="Batalkan pesanan" variant="danger" reason reason-label="Alasan" button-class="btn btn-sm btn-danger-soft" icon="cancel">Batalkan</x-ui.confirm-form>
         @endif
-        @if ($order->dispute)<a href="{{ route('admin.disputes.show', $order->dispute) }}" class="btn btn-sm btn-outline"><span class="material-symbols-outlined text-[18px]">gavel</span>Sengketa</a>@endif
+        @if ($order->dispute)<a href="{{ route('admin.disputes.show', $order->dispute) }}" class="btn btn-sm btn-outline"><span class="material-symbols-outlined text-[18px]">gavel</span>Komplain</a>@endif
     </x-slot:actions>
 
     <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center gap-1 text-xs font-semibold text-secondary hover:text-primary mb-4"><span class="material-symbols-outlined text-[16px]">arrow_back</span>Daftar pesanan</a>

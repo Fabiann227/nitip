@@ -52,7 +52,7 @@ class UpdatePaymentMethodRequest extends FormRequest
     {
         return [
             'account_number.regex' => 'Nomor hanya boleh berisi angka.',
-            'qris_image.required' => 'Unggah gambar kode QRIS kamu.',
+            'qris_image.required' => 'Upload gambar kode QRIS kamu.',
         ];
     }
 }

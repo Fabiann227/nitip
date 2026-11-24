@@ -1,5 +1,5 @@
-<x-layouts.app :title="'Sengketa '.$order->code">
-    <x-ui.page-header :back="route('orders.show', $order)" back-label="Kembali ke pesanan" :eyebrow="'Sengketa · Pesanan #'.$order->code" :title="$dispute->reason->label()" :subtitle="'Dibuka oleh '.$dispute->openedBy->shortName().' '.$dispute->created_at->diffForHumans()">
+<x-layouts.app :title="'Komplain '.$order->code">
+    <x-ui.page-header :back="route('orders.show', $order)" back-label="Kembali ke pesanan" :eyebrow="'Komplain · Pesanan #'.$order->code" :title="$dispute->reason->label()" :subtitle="'Dibuka oleh '.$dispute->openedBy->shortName().' '.$dispute->created_at->diffForHumans()">
         <x-ui.status-badge :status="$dispute->status" class="h-8 px-3 text-sm" />
     </x-ui.page-header>
 
@@ -21,7 +21,7 @@
                     <span class="block text-xs mt-1">Oleh {{ $dispute->resolvedBy?->name }} &bull; {{ $dispute->resolved_at?->translatedFormat('d M Y H:i') }}</span>
                 </x-ui.alert>
             @else
-                <x-ui.alert type="warning" icon="hourglass_top" title="Menunggu tinjauan admin">Admin Nitip akan meninjau audit trail, bukti transfer, dan struk, lalu menghubungi kedua pihak bila perlu. Pesanan dibekukan selama sengketa berjalan.</x-ui.alert>
+                <x-ui.alert type="warning" icon="hourglass_top" title="Menunggu tinjauan admin">Admin Nitip akan meninjau audit trail, bukti transfer, dan struk, lalu menghubungi kedua pihak bila perlu. Pesanan dibekukan selama komplain berjalan.</x-ui.alert>
             @endif
         </div>
         <aside class="space-y-6">

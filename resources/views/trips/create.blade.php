@@ -60,6 +60,7 @@
                     <x-ui.input name="max_slots" type="number" label="Kuota titipan" :value="old('max_slots', $trip?->max_slots ?? 3)" min="1" :max="config('nitip.trips.max_slots')" required :hint="$editing ? 'Tidak boleh kurang dari titipan aktif ('.$trip->active_orders_count.').' : 'Berapa titipan yang sanggup kamu bawa.'" />
                     <div>
                         <x-ui.input name="service_fee" type="number" label="Biaya jasa per titipan" prefix="Rp" x-model.number="fee" step="500" required :disabled="$editing && $trip->active_orders_count > 0" />
+                        <p class="hint font-semibold text-primary" x-text="'Terbaca: ' + rupiah(fee || 0)"></p>
                         <p class="hint" x-show="category">Rentang kategori: <span x-text="category ? rupiah(category.min) + ' - ' + rupiah(category.max) : ''"></span></p>
                         @if ($editing && $trip->active_orders_count > 0)<input type="hidden" name="service_fee" value="{{ $trip->service_fee }}"><p class="hint">Biaya tidak bisa diubah karena sudah ada titipan aktif.</p>@endif
                     </div>

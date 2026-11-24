@@ -149,7 +149,7 @@ class OrderService
         }
 
         if ($category->requires_document && $document === null) {
-            throw new NitipException('Unggah berkas yang ingin dicetak untuk layanan print & fotokopi.');
+            throw new NitipException('Upload file yang ingin dicetak untuk layanan print & fotokopi.');
         }
     }
 

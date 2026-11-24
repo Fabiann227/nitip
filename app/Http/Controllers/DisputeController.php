@@ -25,7 +25,7 @@ class DisputeController extends Controller
         );
 
         return redirect()->route('disputes.show', $dispute)
-            ->with('success', 'Sengketa dibuka. Admin Nitip akan meninjau dan menghubungi kedua pihak.');
+            ->with('success', 'Komplain dibuka. Admin Nitip akan meninjau dan menghubungi kedua pihak.');
     }
 
     public function show(Dispute $dispute): View

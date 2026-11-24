@@ -29,7 +29,7 @@ class DisputeService
         }
 
         if ($order->dispute()->exists()) {
-            throw new NitipException('Sengketa untuk pesanan ini sudah pernah dibuka.');
+            throw new NitipException('Komplain untuk pesanan ini sudah pernah dibuka.');
         }
 
         return DB::transaction(function () use ($order, $opener, $reason, $description, $evidence) {
@@ -46,8 +46,8 @@ class DisputeService
 
             foreach (User::query()->where('role', UserRole::Admin->value)->get() as $admin) {
                 $admin->notify(new AppNotification(
-                    'Sengketa baru perlu ditinjau',
-                    "{$opener->shortName()} membuka sengketa ({$reason->label()}) untuk pesanan {$order->code}.",
+                    'Komplain baru perlu ditinjau',
+                    "{$opener->shortName()} membuka komplain ({$reason->label()}) untuk pesanan {$order->code}.",
                     route('admin.disputes.show', $dispute),
                     'gavel',
                     'danger',
@@ -62,11 +62,11 @@ class DisputeService
     public function resolve(Dispute $dispute, User $admin, DisputeResolution $resolution, string $note): Dispute
     {
         if (! $admin->isAdmin()) {
-            throw new NitipException('Hanya admin yang bisa menyelesaikan sengketa.');
+            throw new NitipException('Hanya admin yang bisa menyelesaikan komplain.');
         }
 
         if (! $dispute->isOpen()) {
-            throw new NitipException('Sengketa ini sudah diselesaikan.');
+            throw new NitipException('Komplain ini sudah diselesaikan.');
         }
 
         return DB::transaction(function () use ($dispute, $admin, $resolution, $note) {

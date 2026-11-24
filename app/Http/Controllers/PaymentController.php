@@ -37,6 +37,6 @@ class PaymentController extends Controller
 
         $this->payments->reject($order, $request->user(), $request->validated('reason'));
 
-        return back()->with('success', 'Bukti pembayaran ditolak. Penitip diminta mengunggah ulang.');
+        return back()->with('success', 'Bukti pembayaran ditolak. Penitip diminta mengupload ulang.');
     }
 }

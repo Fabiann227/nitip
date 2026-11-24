@@ -19,7 +19,7 @@
                 <x-ui.input name="sort_order" type="number" label="Urutan" :value="$category?->sort_order ?? 0" min="0" />
             </div>
             <div class="flex flex-wrap gap-6 pt-2">
-                <x-ui.checkbox name="requires_document" :checked="(bool) old('requires_document', $category?->requires_document)">Wajib unggah berkas (print/fotokopi)</x-ui.checkbox>
+                <x-ui.checkbox name="requires_document" :checked="(bool) old('requires_document', $category?->requires_document)">Wajib upload file (print/fotokopi)</x-ui.checkbox>
                 <x-ui.checkbox name="has_item_cost" :checked="(bool) old('has_item_cost', $category?->has_item_cost ?? true)">Ada biaya barang (butuh struk)</x-ui.checkbox>
                 <x-ui.checkbox name="is_active" :checked="(bool) old('is_active', $category?->is_active ?? true)">Aktif</x-ui.checkbox>
             </div>

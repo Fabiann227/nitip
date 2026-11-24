@@ -16,7 +16,7 @@
             <span class="w-12 h-12 rounded-xl bg-surface-low text-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined">{{ $icon }}</span></span>
         </template>
         <span class="min-w-0 flex-1">
-            <span class="block text-sm font-semibold text-on-surface truncate" x-text="name || 'Pilih {{ $multiple ? 'berkas' : 'file' }}...'"></span>
+            <span class="block text-sm font-semibold text-on-surface truncate" x-text="name || 'Pilih {{ $multiple ? 'file' : 'file' }}...'"></span>
             <span class="block text-xs text-muted">{{ $hint ?? "Maksimal {$maxMb} MB" }}</span>
         </span>
         <span class="btn btn-xs btn-outline shrink-0">Pilih</span>

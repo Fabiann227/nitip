@@ -6,7 +6,7 @@
         ['route' => 'admin.dashboard', 'match' => 'admin.dashboard', 'icon' => 'space_dashboard', 'label' => 'Dashboard'],
         ['route' => 'admin.orders.index', 'match' => 'admin.orders.*', 'icon' => 'receipt_long', 'label' => 'Pesanan'],
         ['route' => 'admin.trips.index', 'match' => 'admin.trips.*', 'icon' => 'route', 'label' => 'Rute'],
-        ['route' => 'admin.disputes.index', 'match' => 'admin.disputes.*', 'icon' => 'gavel', 'label' => 'Sengketa'],
+        ['route' => 'admin.disputes.index', 'match' => 'admin.disputes.*', 'icon' => 'gavel', 'label' => 'Komplain'],
         ['route' => 'admin.users.index', 'match' => 'admin.users.*', 'icon' => 'group', 'label' => 'Pengguna'],
         ['route' => 'admin.categories.index', 'match' => 'admin.categories.*', 'icon' => 'sell', 'label' => 'Kategori & tarif'],
         ['route' => 'admin.audit-logs.index', 'match' => 'admin.audit-logs.*', 'icon' => 'history', 'label' => 'Audit trail'],

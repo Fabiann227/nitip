@@ -1,4 +1,4 @@
-<x-layouts.admin title="Sengketa">
+<x-layouts.admin title="Komplain">
     <div class="flex items-center gap-2 mb-4">
         @foreach (['open' => 'Menunggu tinjauan', 'resolved' => 'Selesai', 'all' => 'Semua'] as $key => $label)
             <x-ui.chip :href="route('admin.disputes.index', ['status' => $key])" :active="$filter === $key">{{ $label }}</x-ui.chip>
@@ -6,7 +6,7 @@
     </div>
     <x-ui.card :padding="false">
         @if ($disputes->isEmpty())
-            <x-ui.empty-state icon="gavel" title="Tidak ada sengketa" description="Semua transaksi berjalan mulus." />
+            <x-ui.empty-state icon="gavel" title="Tidak ada komplain" description="Semua transaksi berjalan mulus." />
         @else
             <div class="divide-y divide-border">
                 @foreach ($disputes as $dispute)

@@ -1,5 +1,5 @@
-<x-layouts.admin :title="'Sengketa #'.$order->code">
-    <a href="{{ route('admin.disputes.index') }}" class="inline-flex items-center gap-1 text-xs font-semibold text-secondary hover:text-primary mb-4"><span class="material-symbols-outlined text-[16px]">arrow_back</span>Daftar sengketa</a>
+<x-layouts.admin :title="'Komplain #'.$order->code">
+    <a href="{{ route('admin.disputes.index') }}" class="inline-flex items-center gap-1 text-xs font-semibold text-secondary hover:text-primary mb-4"><span class="material-symbols-outlined text-[16px]">arrow_back</span>Daftar komplain</a>
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div><span class="eyebrow">Pesanan #{{ $order->code }} · {{ $order->category->name }}</span><h2 class="font-sans font-bold text-2xl">{{ $dispute->reason->label() }}</h2><p class="text-sm text-muted">Dibuka oleh {{ $dispute->openedBy->name }} ({{ $order->isRequester($dispute->openedBy) ? 'penitip' : 'relawan' }}) &bull; {{ $dispute->created_at->translatedFormat('d M Y H:i') }}</p></div>
         <x-ui.status-badge :status="$dispute->status" class="h-8 px-3 text-sm" />

@@ -20,8 +20,8 @@
                         @if ($order->needs_refund)<span class="block mt-2 font-semibold">Relawan wajib mengembalikan dana yang sudah diterima ke penitip.</span>@endif
                     </x-ui.alert>
                 @elseif ($status === OrderStatus::Disputed)
-                    <x-ui.alert type="warning" icon="gavel" title="Sengketa sedang ditinjau admin">
-                        {{ $order->dispute?->reason->label() }} &mdash; dibuka oleh {{ $order->dispute?->openedBy?->shortName() }}. <a href="{{ route('disputes.show', $order->dispute) }}" class="font-semibold underline">Lihat detail sengketa</a>
+                    <x-ui.alert type="warning" icon="gavel" title="Komplain sedang ditinjau admin">
+                        {{ $order->dispute?->reason->label() }} &mdash; dibuka oleh {{ $order->dispute?->openedBy?->shortName() }}. <a href="{{ route('disputes.show', $order->dispute) }}" class="font-semibold underline">Lihat detail komplain</a>
                     </x-ui.alert>
                 @elseif ($order->isExpired())
                     <x-ui.alert type="warning" icon="timer_off" title="Batas waktu terlewat">Permintaan ini sudah melewati waktu yang dibutuhkan dan tidak lagi tampil di feed.</x-ui.alert>
@@ -94,20 +94,20 @@
             @endif
 
             @if ($order->dispute)
-                <x-ui.card title="Sengketa" icon="gavel">
+                <x-ui.card title="Komplain" icon="gavel">
                     <div class="flex items-center justify-between mb-2"><span class="text-sm font-semibold">{{ $order->dispute->reason->label() }}</span><x-ui.status-badge :status="$order->dispute->status" /></div>
                     <p class="text-xs text-on-surface-variant">Dibuka oleh {{ $order->dispute->openedBy?->shortName() }} {{ $order->dispute->created_at->diffForHumans() }}</p>
                     @if ($order->dispute->resolution)<p class="text-xs text-on-surface mt-2"><span class="font-semibold">Keputusan:</span> {{ $order->dispute->resolution->shortLabel() }}</p>@endif
-                    <a href="{{ route('disputes.show', $order->dispute) }}" class="btn btn-sm btn-outline w-full mt-3">Lihat sengketa</a>
+                    <a href="{{ route('disputes.show', $order->dispute) }}" class="btn btn-sm btn-outline w-full mt-3">Lihat komplain</a>
                 </x-ui.card>
             @elseif ($role)
                 @can('dispute', $order)
                     <x-ui.card class="p-4">
                         <p class="text-sm font-semibold text-on-surface mb-1">Ada masalah?</p>
-                        <p class="text-xs text-on-surface-variant mb-3">Selesaikan dulu lewat WhatsApp. Jika buntu, buka sengketa agar admin Nitip menengahi berdasarkan audit trail.</p>
-                        <button type="button" class="btn btn-sm btn-danger-soft w-full" x-on:click="$dispatch('open-modal', 'dispute')"><span class="material-symbols-outlined text-[18px]">gavel</span>Buka sengketa</button>
+                        <p class="text-xs text-on-surface-variant mb-3">Selesaikan dulu lewat WhatsApp. Jika buntu, buka komplain agar admin Nitip menengahi berdasarkan audit trail.</p>
+                        <button type="button" class="btn btn-sm btn-danger-soft w-full" x-on:click="$dispatch('open-modal', 'dispute')"><span class="material-symbols-outlined text-[18px]">gavel</span>Buka komplain</button>
                     </x-ui.card>
-                    <x-ui.modal name="dispute" title="Buka sengketa" :open-on-error="$errors->hasAny(['reason', 'description', 'evidence'])">
+                    <x-ui.modal name="dispute" title="Buka komplain" :open-on-error="$errors->hasAny(['reason', 'description', 'evidence'])">
                         <form method="POST" action="{{ route('orders.disputes.store', $order) }}" enctype="multipart/form-data" class="space-y-4">
                             @csrf
                             <x-ui.select name="reason" label="Jenis masalah" required>
@@ -115,7 +115,7 @@
                             </x-ui.select>
                             <x-ui.textarea name="description" label="Kronologi" rows="4" required placeholder="Jelaskan apa yang terjadi, minimal 20 karakter" />
                             <x-ui.file-input name="evidence" label="Bukti (foto)" optional accept="image/*" :max-mb="4" icon="add_a_photo" />
-                            <div class="flex justify-end gap-2"><button type="button" class="btn btn-outline" x-on:click="$dispatch('close-modal', 'dispute')">Batal</button><button type="submit" class="btn btn-danger">Kirim sengketa</button></div>
+                            <div class="flex justify-end gap-2"><button type="button" class="btn btn-outline" x-on:click="$dispatch('close-modal', 'dispute')">Batal</button><button type="submit" class="btn btn-danger">Kirim komplain</button></div>
                         </form>
                     </x-ui.modal>
                 @endcan

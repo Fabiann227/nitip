@@ -98,7 +98,7 @@
 
         {{-- Print specs --}}
         <div x-show="category && category.print" x-cloak class="space-y-4">
-            <x-ui.file-input name="document" label="Berkas yang dicetak" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,image/*" :max-mb="10" hint="PDF/DOC/PPT/XLS/gambar, maksimal 10 MB" icon="picture_as_pdf" />
+            <x-ui.file-input name="document" label="File yang dicetak" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,image/*" :max-mb="10" hint="PDF/DOC/PPT/XLS/gambar, maksimal 10 MB" icon="picture_as_pdf" />
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <x-ui.input name="print[pages]" type="number" label="Halaman" :value="old('print.pages', 1)" min="1" max="2000" />
                 <x-ui.input name="print[copies]" type="number" label="Rangkap" :value="old('print.copies', 1)" min="1" max="50" />
@@ -131,6 +131,7 @@
                 <x-ui.input name="needed_by" type="datetime-local" label="Dibutuhkan sebelum" :value="old('needed_by', now()->addHours(2)->format('Y-m-d\TH:i'))" required :min="now()->format('Y-m-d\TH:i')" hint="Maksimal 7 hari ke depan." />
                 <div>
                     <x-ui.input name="service_fee" type="number" label="Biaya jasa untuk relawan" prefix="Rp" x-model.number="fee" step="500" required />
+                    <p class="hint font-semibold text-primary" x-text="'Terbaca: ' + rupiah(fee || 0)"></p>
                     <p class="hint" x-show="category">Rentang kategori: <span x-text="category ? rupiah(category.feeMin) + ' - ' + rupiah(category.feeMax) : ''"></span>. Relawan menerima 100 %.</p>
                 </div>
             </div>

@@ -226,7 +226,7 @@
                 @foreach ([
                     ['post_add', 'Post & Match', 'Buat posting titipan atau buka rute kampus sampai bertemu partner yang cocok.'],
                     ['payments', 'Pay & Verify', 'Penitip transfer langsung ke relawan (GoPay/BCA/QRIS) dan bukti diverifikasi.'],
-                    ['shopping_cart_checkout', 'In Progress', 'Relawan berbelanja menu kantin atau mencetak berkas tugas yang dititipkan.'],
+                    ['shopping_cart_checkout', 'In Progress', 'Relawan berbelanja menu kantin atau mencetak file tugas yang dititipkan.'],
                     ['directions_walk', 'Delivering', 'Relawan menginput harga riil dari struk kasir, lalu mengantar pesanan ke titik temu.'],
                     ['task_alt', 'Completed', 'Serah terima pesanan, selisih nota diselesaikan, lalu konfirmasi selesai via PIN 4 digit.'],
                 ] as $i => [$icon, $title, $desc])
@@ -346,7 +346,7 @@
                                     <dd class="font-semibold tabular text-on-surface">{{ rupiah($category->fee_default) }}</dd>
                                 </div>
                                 <div class="flex justify-between items-center py-0.5">
-                                    <dt class="text-muted">Berkas cetak</dt>
+                                    <dt class="text-muted">File cetak</dt>
                                     <dd class="font-semibold {{ $category->requires_document ? 'text-info font-bold' : 'text-on-surface-variant' }}">
                                         {{ $category->requires_document ? 'Wajib (PDF/DOC)' : 'Tidak perlu' }}
                                     </dd>
@@ -387,7 +387,7 @@
                     </span>
                     <div>
                         <h4 class="text-xs sm:text-[13px] font-bold text-on-surface">Sesuai Struk Kasir</h4>
-                        <p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Relawan wajib unggah foto nota asli. Tidak ada mark-up harga menu kantin atau cetak.</p>
+                        <p class="text-xs text-on-surface-variant mt-0.5 leading-relaxed">Relawan wajib upload foto nota asli. Tidak ada mark-up harga menu kantin atau cetak.</p>
                     </div>
                 </div>
 

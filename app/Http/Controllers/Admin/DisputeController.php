@@ -49,6 +49,6 @@ class DisputeController extends Controller
             $request->validated('note'),
         );
 
-        return redirect()->route('admin.disputes.show', $dispute)->with('success', 'Sengketa diselesaikan dan kedua pihak diberi tahu.');
+        return redirect()->route('admin.disputes.show', $dispute)->with('success', 'Komplain diselesaikan dan kedua pihak diberi tahu.');
     }
 }

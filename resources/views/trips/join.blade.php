@@ -20,7 +20,7 @@
                     <div class="flex justify-between"><dt class="text-muted">Berangkat</dt><dd class="font-semibold">{{ $trip->departure_at->translatedFormat('H:i') }}</dd></div>
                 </dl>
             </x-ui.card>
-            <x-ui.alert type="info" icon="payments">Setelah bergabung, kamu langsung diminta transfer biaya jasa + perkiraan barang ke relawan dan mengunggah bukti.</x-ui.alert>
+            <x-ui.alert type="info" icon="payments">Setelah bergabung, kamu langsung diminta transfer biaya jasa + perkiraan barang ke relawan dan mengupload bukti.</x-ui.alert>
         </aside>
     </div>
 </x-layouts.app>

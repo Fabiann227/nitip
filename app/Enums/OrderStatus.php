@@ -27,7 +27,7 @@ enum OrderStatus: string
             self::Delivered => 'Sudah Diserahkan',
             self::Completed => 'Selesai',
             self::Cancelled => 'Dibatalkan',
-            self::Disputed => 'Sengketa',
+            self::Disputed => 'Komplain',
         };
     }
 
@@ -35,15 +35,15 @@ enum OrderStatus: string
     {
         return match ($this) {
             self::Open => 'Permintaan sudah tayang dan menunggu relawan yang searah untuk mengambilnya.',
-            self::AwaitingPayment => 'Relawan sudah cocok. Penitip perlu transfer dan unggah bukti pembayaran.',
-            self::PaymentSubmitted => 'Bukti transfer sudah diunggah dan menunggu verifikasi relawan.',
+            self::AwaitingPayment => 'Relawan sudah cocok. Penitip perlu transfer dan upload bukti pembayaran.',
+            self::PaymentSubmitted => 'Bukti transfer sudah diupload dan menunggu verifikasi relawan.',
             self::Paid => 'Pembayaran terverifikasi. Relawan akan segera memproses pesanan.',
             self::InProgress => 'Relawan sedang membeli / mencetak pesanan.',
             self::Delivering => 'Pesanan sedang bergerak menuju titik serah terima.',
             self::Delivered => 'Relawan sudah menyerahkan pesanan. Penitip perlu konfirmasi.',
             self::Completed => 'Transaksi selesai. Terima kasih sudah memakai Nitip!',
             self::Cancelled => 'Pesanan dibatalkan.',
-            self::Disputed => 'Sengketa sedang ditinjau admin Nitip.',
+            self::Disputed => 'Komplain sedang ditinjau admin Nitip.',
         };
     }
 

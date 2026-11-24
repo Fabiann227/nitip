@@ -23,7 +23,7 @@ class PaymentService
     public function submitProof(Order $order, User $payer, UploadedFile $proof, ?string $note = null): Order
     {
         if (! $order->isRequester($payer)) {
-            throw new NitipException('Hanya penitip yang bisa mengunggah bukti pembayaran.');
+            throw new NitipException('Hanya penitip yang bisa mengupload bukti pembayaran.');
         }
 
         if ($order->status !== OrderStatus::AwaitingPayment) {

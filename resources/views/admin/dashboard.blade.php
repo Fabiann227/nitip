@@ -3,7 +3,7 @@
         <x-ui.stat-card label="Mahasiswa terdaftar" :value="$stats['users']" icon="group" :hint="$stats['verified'].' terverifikasi · '.$stats['suspended'].' ditangguhkan'" :href="route('admin.users.index')" />
         <x-ui.stat-card label="Total pesanan" :value="$stats['orders']" icon="receipt_long" tone="secondary" :hint="$stats['orders_active'].' aktif · '.$stats['open_requests'].' mencari relawan'" :href="route('admin.orders.index')" />
         <x-ui.stat-card label="Completion rate" :value="$stats['completion_rate'].' %'" icon="task_alt" tone="info" :hint="$stats['completed'].' selesai / '.$stats['cancelled'].' batal (target 85 %)'" />
-        <x-ui.stat-card label="Sengketa terbuka" :value="$stats['open_disputes']" icon="gavel" :tone="$stats['open_disputes'] > 0 ? 'danger' : 'neutral'" :hint="$stats['needs_refund'].' pesanan perlu refund'" :href="route('admin.disputes.index')" />
+        <x-ui.stat-card label="Komplain terbuka" :value="$stats['open_disputes']" icon="gavel" :tone="$stats['open_disputes'] > 0 ? 'danger' : 'neutral'" :hint="$stats['needs_refund'].' pesanan perlu refund'" :href="route('admin.disputes.index')" />
     </div>
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
         <x-ui.stat-card label="Nilai transaksi selesai" :value="rupiah($stats['gmv'])" icon="payments" tone="neutral" hint="jasa + barang (GMV)" />
@@ -58,12 +58,12 @@
                     @endforeach
                 </ul>
             </x-ui.card>
-            <x-ui.card title="Sengketa perlu tinjauan" icon="gavel" :padding="false">
+            <x-ui.card title="Komplain perlu tinjauan" icon="gavel" :padding="false">
                 <div class="divide-y divide-border">
                     @forelse ($openDisputes as $dispute)
                         <a href="{{ route('admin.disputes.show', $dispute) }}" class="block p-4 hover:bg-canvas"><p class="text-sm font-semibold">{{ $dispute->reason->label() }}</p><p class="text-xs text-muted">#{{ $dispute->order->code }} &bull; {{ $dispute->openedBy->shortName() }} &bull; {{ $dispute->created_at->diffForHumans() }}</p></a>
                     @empty
-                        <p class="p-4 text-sm text-muted">Tidak ada sengketa terbuka. 🎉</p>
+                        <p class="p-4 text-sm text-muted">Tidak ada komplain terbuka. 🎉</p>
                     @endforelse
                 </div>
             </x-ui.card>

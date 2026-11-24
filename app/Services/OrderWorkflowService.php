@@ -122,12 +122,12 @@ class OrderWorkflowService
         $order->forceFill(['status' => OrderStatus::PaymentSubmitted])->save();
 
         $this->record($order, $payer, OrderEventType::PaymentSubmitted, OrderStatus::AwaitingPayment, OrderStatus::PaymentSubmitted,
-            'Bukti transfer sebesar '.rupiah($order->estimatedTotal()).' diunggah via '.$order->payment_method.'.');
+            'Bukti transfer sebesar '.rupiah($order->estimatedTotal()).' diupload via '.$order->payment_method.'.');
 
         $order->fulfiller?->notify(new OrderActivity(
             $order,
             'Bukti pembayaran masuk',
-            "{$payer->shortName()} mengunggah bukti transfer ".rupiah($order->estimatedTotal()).'. Cek mutasi dan verifikasi.',
+            "{$payer->shortName()} mengupload bukti transfer ".rupiah($order->estimatedTotal()).'. Cek mutasi dan verifikasi.',
             'receipt_long',
             'info',
         ));
@@ -167,7 +167,7 @@ class OrderWorkflowService
         $order->requester->notify(new OrderActivity(
             $order,
             'Bukti pembayaran ditolak',
-            "Relawan menolak bukti transfer untuk \"{$order->title}\": {$reason}. Unggah ulang bukti yang benar.",
+            "Relawan menolak bukti transfer untuk \"{$order->title}\": {$reason}. Upload ulang bukti yang benar.",
             'error',
             'danger',
         ));
@@ -187,7 +187,7 @@ class OrderWorkflowService
 
         $order->forceFill(['status' => OrderStatus::InProgress, 'started_at' => now()])->save();
 
-        $verb = $order->category->isPrint() ? 'mencetak berkas' : 'membeli pesanan';
+        $verb = $order->category->isPrint() ? 'mencetak file' : 'membeli pesanan';
         $this->record($order, $fulfiller, OrderEventType::Started, OrderStatus::Paid, OrderStatus::InProgress,
             "Relawan mulai {$verb}.");
 
@@ -307,7 +307,7 @@ class OrderWorkflowService
 
                 if ($order->status === OrderStatus::Delivering) {
                     if ($order->category->has_item_cost && ! $order->hasReceipt()) {
-                        throw new NitipException('Unggah foto struk lewat "Tandai sudah diserahkan" sebelum memasukkan PIN.');
+                        throw new NitipException('Upload foto struk lewat "Tandai sudah diserahkan" sebelum memasukkan PIN.');
                     }
                     $order->forceFill(['delivered_at' => now(), 'actual_item_cost' => $order->actual_item_cost ?? $order->estimated_item_cost]);
                 }
@@ -360,7 +360,7 @@ class OrderWorkflowService
                 default => [],
             };
 
-            $this->assertStatus($order, $allowed, 'Pesanan tidak bisa dibatalkan pada tahap ini. Gunakan fitur sengketa jika ada masalah.');
+            $this->assertStatus($order, $allowed, 'Pesanan tidak bisa dibatalkan pada tahap ini. Gunakan fitur komplain jika ada masalah.');
 
             $from = $order->status;
             $needsRefund = in_array($from, [OrderStatus::Paid, OrderStatus::InProgress, OrderStatus::Delivering, OrderStatus::Delivered, OrderStatus::Disputed], true);
@@ -397,18 +397,18 @@ class OrderWorkflowService
     public function markDisputed(Order $order, User $opener, string $summary): Order
     {
         $this->assertStatus($order, [OrderStatus::Paid, OrderStatus::InProgress, OrderStatus::Delivering, OrderStatus::Delivered],
-            'Sengketa hanya bisa dibuka setelah pembayaran terverifikasi dan sebelum pesanan selesai.');
+            'Komplain hanya bisa dibuka setelah pembayaran terverifikasi dan sebelum pesanan selesai.');
 
         $from = $order->status;
         $order->forceFill(['status' => OrderStatus::Disputed])->save();
 
         $this->record($order, $opener, OrderEventType::DisputeOpened, $from, OrderStatus::Disputed,
-            "{$opener->shortName()} membuka sengketa: {$summary}", ['previous_status' => $from->value]);
+            "{$opener->shortName()} membuka komplain: {$summary}", ['previous_status' => $from->value]);
 
         $order->counterpartFor($opener)?->notify(new OrderActivity(
             $order,
-            'Sengketa dibuka',
-            "{$opener->shortName()} membuka sengketa untuk \"{$order->title}\". Admin Nitip akan meninjau.",
+            'Komplain dibuka',
+            "{$opener->shortName()} membuka komplain untuk \"{$order->title}\". Admin Nitip akan meninjau.",
             'gavel',
             'danger',
         ));
@@ -418,10 +418,10 @@ class OrderWorkflowService
 
     public function resolveDispute(Order $order, User $admin, OrderStatus $finalStatus, string $note, bool $needsRefund = false): Order
     {
-        $this->assertStatus($order, [OrderStatus::Disputed], 'Pesanan tidak sedang dalam sengketa.');
+        $this->assertStatus($order, [OrderStatus::Disputed], 'Pesanan tidak sedang dalam komplain.');
 
         if (! in_array($finalStatus, [OrderStatus::Completed, OrderStatus::Cancelled], true)) {
-            throw new InvalidOrderTransitionException('Resolusi sengketa hanya boleh menjadi selesai atau dibatalkan.');
+            throw new InvalidOrderTransitionException('Resolusi komplain hanya boleh menjadi selesai atau dibatalkan.');
         }
 
         $attributes = ['status' => $finalStatus];
@@ -432,19 +432,19 @@ class OrderWorkflowService
         } else {
             $attributes['cancelled_at'] = now();
             $attributes['cancelled_by'] = $admin->id;
-            $attributes['cancel_reason'] = 'Resolusi sengketa: '.$note;
+            $attributes['cancel_reason'] = 'Resolusi komplain: '.$note;
             $attributes['needs_refund'] = $needsRefund;
         }
 
         $order->forceFill($attributes)->save();
 
         $this->record($order, $admin, OrderEventType::DisputeResolved, OrderStatus::Disputed, $finalStatus,
-            "Admin menyelesaikan sengketa: {$note}");
+            "Admin menyelesaikan komplain: {$note}");
 
         foreach (array_filter([$order->requester, $order->fulfiller]) as $party) {
             $party->notify(new OrderActivity(
                 $order,
-                'Sengketa diselesaikan',
+                'Komplain diselesaikan',
                 "Admin memutuskan pesanan \"{$order->title}\" menjadi {$finalStatus->label()}. {$note}",
                 'balance',
                 $finalStatus === OrderStatus::Completed ? 'success' : 'warning',

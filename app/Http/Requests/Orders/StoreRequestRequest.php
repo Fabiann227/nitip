@@ -109,7 +109,7 @@ class StoreRequestRequest extends FormRequest
             'print.paper_size' => 'ukuran kertas',
             'print.binding' => 'jenis jilid',
             'print.instructions' => 'instruksi cetak',
-            'document' => 'berkas',
+            'document' => 'file',
             'items' => 'daftar item',
             'items.*.name' => 'nama item',
             'items.*.quantity' => 'jumlah',
@@ -128,7 +128,7 @@ class StoreRequestRequest extends FormRequest
             'needed_by.before' => 'Batas waktu maksimal 7 hari ke depan.',
             'items.required' => 'Tambahkan minimal satu item yang ingin dititip.',
             'items.min' => 'Tambahkan minimal satu item yang ingin dititip.',
-            'document.required' => 'Unggah berkas yang ingin dicetak.',
+            'document.required' => 'Upload file yang ingin dicetak.',
             'service_fee.min' => 'Biaya jasa minimal :min sesuai rentang kategori.',
             'service_fee.max' => 'Biaya jasa maksimal :max sesuai rentang kategori.',
         ];

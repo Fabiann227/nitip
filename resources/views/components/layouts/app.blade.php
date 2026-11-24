@@ -27,23 +27,6 @@
                 </nav>
 
                 <div class="flex items-center gap-2 sm:gap-3">
-                    <x-ui.dropdown align="right" width="w-64">
-                        <x-slot:trigger>
-                            <button type="button" class="hidden sm:inline-flex btn btn-primary btn-sm">
-                                <span class="material-symbols-outlined text-[18px]">add_circle</span>
-                                Buat Titipan
-                            </button>
-                        </x-slot:trigger>
-                        <a href="{{ route('requests.create') }}" class="flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-surface-low transition-colors">
-                            <span class="material-symbols-outlined text-primary text-[22px] mt-0.5">shopping_bag</span>
-                            <span><span class="block text-sm font-semibold text-on-surface">Posting kebutuhan</span><span class="block text-xs text-muted">Minta tolong dibelikan / dicetak</span></span>
-                        </a>
-                        <a href="{{ route('trips.create') }}" class="flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-surface-low transition-colors">
-                            <span class="material-symbols-outlined text-primary text-[22px] mt-0.5">directions_walk</span>
-                            <span><span class="block text-sm font-semibold text-on-surface">Posting rute</span><span class="block text-xs text-muted">Bawa titipan searah jalanmu</span></span>
-                        </a>
-                    </x-ui.dropdown>
-
                     <a href="{{ route('notifications.index') }}" class="btn-icon relative" aria-label="Notifikasi{{ $nav['unread'] ? ', '.$nav['unread'].' belum dibaca' : '' }}">
                         <span class="material-symbols-outlined text-[22px]">notifications</span>
                         @if ($nav['unread'] > 0)

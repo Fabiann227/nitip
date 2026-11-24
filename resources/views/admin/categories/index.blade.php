@@ -2,7 +2,7 @@
     <x-slot:actions><a href="{{ route('admin.categories.create') }}" class="btn btn-sm btn-primary"><span class="material-symbols-outlined text-[18px]">add</span>Kategori baru</a></x-slot:actions>
     <p class="text-sm text-on-surface-variant mb-4">Skema flat fee dari PDF: rentang tarif rekomendasi membatasi biaya jasa yang bisa dipilih pengguna.</p>
     <x-ui.card :padding="false">
-        <div class="overflow-x-auto"><table class="table"><thead><tr><th>Kategori</th><th>Kode</th><th>Tarif min</th><th>Default</th><th>Tarif maks</th><th>Berkas</th><th>Pesanan</th><th>Status</th><th></th></tr></thead><tbody>
+        <div class="overflow-x-auto"><table class="table"><thead><tr><th>Kategori</th><th>Kode</th><th>Tarif min</th><th>Default</th><th>Tarif maks</th><th>File</th><th>Pesanan</th><th>Status</th><th></th></tr></thead><tbody>
             @foreach ($categories as $category)
                 <tr>
                     <td><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary">{{ $category->icon }}</span><div><p class="font-semibold">{{ $category->name }}</p><p class="text-xs text-muted max-w-xs truncate">{{ $category->description }}</p></div></div></td>

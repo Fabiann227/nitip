@@ -36,7 +36,7 @@
                     <a href="{{ $order->fileUrl('proof') }}" target="_blank" class="btn btn-xs btn-outline">Lihat</a>
                 </div>
                 <x-ui.confirm-form :action="route('orders.payment.verify', $order)" title="Konfirmasi dana sudah masuk?" message="Verifikasi hanya jika saldo/mutasi kamu benar-benar bertambah sesuai jumlah. Setelah ini pesanan berstatus dibayar." confirm="Ya, dana masuk" button-class="btn btn-primary" icon="verified">Verifikasi pembayaran</x-ui.confirm-form>
-                <x-ui.confirm-form :action="route('orders.payment.reject', $order)" title="Tolak bukti pembayaran" message="Penitip akan diminta mengunggah ulang bukti yang benar." confirm="Tolak bukti" variant="danger" reason reason-label="Alasan penolakan" reason-placeholder="Contoh: nominal tidak sesuai / mutasi belum masuk" button-class="btn btn-danger-soft" icon="block">Tolak</x-ui.confirm-form>
+                <x-ui.confirm-form :action="route('orders.payment.reject', $order)" title="Tolak bukti pembayaran" message="Penitip akan diminta mengupload ulang bukti yang benar." confirm="Tolak bukti" variant="danger" reason reason-label="Alasan penolakan" reason-placeholder="Contoh: nominal tidak sesuai / mutasi belum masuk" button-class="btn btn-danger-soft" icon="block">Tolak</x-ui.confirm-form>
             @endif
 
             @if (in_array('start', $actions))

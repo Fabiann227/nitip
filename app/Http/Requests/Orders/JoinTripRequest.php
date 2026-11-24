@@ -52,7 +52,7 @@ class JoinTripRequest extends FormRequest
     {
         return [
             'items.required' => 'Tambahkan minimal satu item yang ingin dititip.',
-            'document.required' => 'Unggah berkas yang ingin dicetak.',
+            'document.required' => 'Upload file yang ingin dicetak.',
         ];
     }
 }

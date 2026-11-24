@@ -32,7 +32,7 @@ class OrderFileController extends Controller
     {
         $this->authorize('view', $dispute);
 
-        return $this->stream($dispute->evidence_path, 'bukti-sengketa');
+        return $this->stream($dispute->evidence_path, 'bukti-komplain');
     }
 
     public function qris(User $user): StreamedResponse

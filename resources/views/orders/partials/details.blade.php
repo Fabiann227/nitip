@@ -58,7 +58,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             @if ($order->hasDocument())
                 <div>
-                    <h3 class="text-sm font-semibold text-on-surface mb-2">Berkas cetak</h3>
+                    <h3 class="text-sm font-semibold text-on-surface mb-2">File cetak</h3>
                     <a href="{{ $order->fileUrl('document') }}" target="_blank" rel="noopener" class="flex items-center gap-3 p-2.5 rounded-xl border border-border hover:bg-surface-low"><span class="material-symbols-outlined text-primary">description</span><span class="min-w-0 flex-1"><span class="block text-sm font-medium truncate">{{ $order->document_name }}</span><span class="block text-xs text-muted">Buka / unduh</span></span><span class="material-symbols-outlined text-outline">open_in_new</span></a>
                 </div>
             @endif

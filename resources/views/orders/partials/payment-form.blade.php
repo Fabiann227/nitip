@@ -2,10 +2,10 @@
 @php $fulfiller = $order->fulfiller; @endphp
 <div class="mt-5 pt-5 border-t border-border">
     <h3 class="font-sans font-bold text-base mb-1">Bayar sekarang</h3>
-    <p class="text-sm text-on-surface-variant mb-4">Transfer <strong class="text-primary">{{ rupiah($order->estimatedTotal()) }}</strong> ke {{ $fulfiller->shortName() }}, lalu unggah bukti transfer.</p>
+    <p class="text-sm text-on-surface-variant mb-4">Transfer <strong class="text-primary">{{ rupiah($order->estimatedTotal()) }}</strong> ke {{ $fulfiller->shortName() }}, lalu upload bukti transfer.</p>
 
     @if ($order->payment_rejection_reason)
-        <x-ui.alert type="error" icon="error" class="mb-4" title="Bukti sebelumnya ditolak">{{ $order->payment_rejection_reason }}. Unggah ulang bukti yang benar.</x-ui.alert>
+        <x-ui.alert type="error" icon="error" class="mb-4" title="Bukti sebelumnya ditolak">{{ $order->payment_rejection_reason }}. Upload ulang bukti yang benar.</x-ui.alert>
     @endif
 
     @if (! $fulfiller->hasPaymentMethod())
