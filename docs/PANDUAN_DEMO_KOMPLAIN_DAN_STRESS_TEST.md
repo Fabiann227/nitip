@@ -18,7 +18,7 @@ Cara termudah mengingatnya: **satu mundur satu langkah, satu mundur keluar, satu
 |---|---|---|---|
 | **Inti** | Menolak satu bukti transfer | Relawan mundur dari pesanan | Menutup pesanan selamanya |
 | **Siapa yang menekan** | Relawan | Relawan | Penitip, relawan, atau admin |
-| **Status sebelum** | Verifikasi Pembayaran | Menunggu Pembayaran / Verifikasi Pembayaran | Status apa pun yang belum selesai |
+| **Status sebelum** | Verifikasi Pembayaran | Menunggu Pembayaran | Status aktif, kecuali Verifikasi Pembayaran |
 | **Status sesudah** | kembali ke Menunggu Pembayaran | kembali ke Mencari Relawan | Dibatalkan (terminal) |
 | **Nasib pesanan** | Tetap hidup, relawan tetap orang yang sama | Tetap hidup, tayang lagi mencari relawan lain | Mati, tidak bisa dilanjutkan |
 | **Alasan wajib diisi** | Ya | Ya | Ya |
@@ -38,18 +38,26 @@ alasan penolakan, mengembalikan status ke Menunggu Pembayaran, dan memberi tahu 
 Siklus ini boleh berulang sampai buktinya benar.
 
 **Lepas titipan** hanya tersedia untuk pesanan **jalur REQUEST** (titipan yang diposting penitip),
-dan hanya **sebelum pembayaran diverifikasi**. Pesanan jalur OFFER (ikut rute) tidak punya tombol
-ini, karena relawannya adalah pemilik rute itu sendiri, jadi tidak masuk akal kalau dia "melepas"
-sambil tetap memiliki rutenya. Setelah pembayaran diverifikasi, tombol ini juga hilang, karena
-uang sudah berpindah sehingga mundur begitu saja tidak lagi adil bagi penitip.
+dan hanya pada tahap **Menunggu Pembayaran**, yaitu ketika penitip belum mengirim bukti transfer
+apa pun. Pesanan jalur OFFER (ikut rute) tidak punya tombol ini, karena relawannya adalah pemilik
+rute itu sendiri, jadi tidak masuk akal kalau dia "melepas" sambil tetap memiliki rutenya.
+
+**Aturan penting (berlaku sejak 25 November 2026):** begitu penitip mengunggah bukti transfer
+(status **Verifikasi Pembayaran**), tombol **Lepas titipan** dan **Batalkan pesanan** sengaja
+dihilangkan untuk kedua pihak. Pada titik itu penitip sudah mengirim uang, jadi relawan tidak boleh
+mundur begitu saja sambil meninggalkan dana yang menggantung. Satu-satunya pilihan adalah
+memutuskan soal dananya dulu: **Verifikasi** kalau dana masuk, atau **Tolak bukti** kalau tidak.
+Setelah ditolak, status kembali ke Menunggu Pembayaran dan opsi melepas atau membatalkan
+tersedia lagi. Hanya admin yang tetap bisa membatalkan pada tahap ini, dan pembatalan itu otomatis
+ditandai **wajib refund**.
 
 **Batalkan pesanan** punya batas berbeda untuk tiap peran:
 
 | Peran | Boleh membatalkan pada tahap |
 |---|---|
-| Penitip | Mencari Relawan, Menunggu Pembayaran, Verifikasi Pembayaran |
-| Relawan | Menunggu Pembayaran, Verifikasi Pembayaran, Dibayar, Sedang Diproses |
-| Admin | Semua tahap yang belum selesai |
+| Penitip | Mencari Relawan, Menunggu Pembayaran |
+| Relawan | Menunggu Pembayaran, Dibayar, Sedang Diproses |
+| Admin | Semua tahap yang belum selesai (termasuk Verifikasi Pembayaran) |
 
 Perhatikan: setelah tahap **Sedang Diantar**, penitip maupun relawan **tidak bisa lagi membatalkan**.
 Pada titik itu barang sudah dibeli dengan uang relawan, jadi jalan keluarnya bukan pembatalan
@@ -57,7 +65,8 @@ sepihak melainkan **komplain** (Bagian B), supaya admin yang memutuskan berdasar
 
 > **Jawaban singkat kalau ditanya:** "Tolak bukti mengulang satu langkah pembayaran, lepas titipan
 > mengganti relawannya tapi pesanan tetap hidup, batalkan menutup pesanan untuk kedua pihak dan
-> kalau uang sudah masuk akan ditandai wajib refund."
+> kalau uang sudah masuk akan ditandai wajib refund. Khusus saat bukti transfer sedang menunggu
+> diperiksa, hanya ada dua pilihan: verifikasi atau tolak."
 
 ---
 

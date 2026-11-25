@@ -481,6 +481,6 @@ php artisan migrate:fresh --seed
 # lihat daftar migrasi dan statusnya
 php artisan migrate:status
 
-# jalankan seluruh automated test (45 test)
+# jalankan seluruh automated test (46 test)
 php artisan test
 ```
