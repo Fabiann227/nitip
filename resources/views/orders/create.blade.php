@@ -16,7 +16,7 @@
         </form>
 
         <aside class="space-y-4">
-            <x-ui.card title="Yang terjadi setelah kamu posting" icon="help">
+            <x-ui.card title="Yang terjadi setelah kamu posting" icon="help" title-wrap>
                 <ol class="space-y-3 text-sm text-on-surface-variant">
                     <li class="flex gap-2"><span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>Permintaan kamu langsung tayang di feed kampus. Relawan yang kebetulan searah bisa mengambilnya.</li>
                     <li class="flex gap-2"><span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>Kamu transfer biaya jasa + perkiraan barang langsung ke relawan, upload bukti.</li>
