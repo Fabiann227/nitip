@@ -1,10 +1,23 @@
-import re, sys, json, time, statistics, random
+import re, os, sys, json, time, statistics, random
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 import requests
 
 sys.stdout.reconfigure(encoding='utf-8')
-BASE = 'https://nitip.76-13-22-7.sslip.io'
+# Target & skala beban bisa diganti tanpa mengedit file:
+#   python stress.py                         -> server live, beban penuh
+#   python stress.py http://127.0.0.1:8000   -> target lain (mis. lokal)
+#   NITIP_SCALE=0.2 python stress.py ...     -> 20% beban (latihan di laptop)
+DEFAULT_BASE = 'https://nitip.76-13-22-7.sslip.io'
+BASE = (sys.argv[1] if len(sys.argv) > 1 and sys.argv[1].startswith('http')
+        else os.environ.get('NITIP_BASE', DEFAULT_BASE)).rstrip('/')
+SCALE = float(os.environ.get('NITIP_SCALE', '1'))
+sc = lambda n, lo=1: max(lo, int(round(n * SCALE)))
+N_LANDING, N_CONN = sc(300, 10), sc(30, 2)      # S1
+N_USERS = sc(40, 4)                              # pool login
+N_POSTERS = sc(30, 2)                            # S3
+N_ROUNDS, N_RACERS = sc(5, 1), sc(10, 2)         # S4
+RESULTS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'stress_results.json')
 PW = 'password'
 results = []  # (scenario, ok, status, seconds)
 
@@ -55,15 +68,15 @@ def stats(scn):
 
 # ---------------------------------------------------------------- S1 landing
 def s1():
-    print('S1 landing: 300 GET / @ 30 koneksi anonim')
-    sessions = [new_session() for _ in range(30)]
+    print(f'S1 landing: {N_LANDING} GET / @ {N_CONN} koneksi anonim')
+    sessions = [new_session() for _ in range(N_CONN)]
     t0 = time.perf_counter()
-    with ThreadPoolExecutor(30) as ex:
-        futs = [ex.submit(timed, 'landing', lambda s=sessions[k % 30]: s.get(BASE + '/', timeout=60))
-                for k in range(300)]
+    with ThreadPoolExecutor(N_CONN) as ex:
+        futs = [ex.submit(timed, 'landing', lambda s=sessions[k % N_CONN]: s.get(BASE + '/', timeout=60))
+                for k in range(N_LANDING)]
         for f in as_completed(futs): f.result()
     dur = time.perf_counter() - t0
-    print(f'  selesai {dur:.1f}s -> {300/dur:.1f} req/s | {stats("landing")}')
+    print(f'  selesai {dur:.1f}s -> {N_LANDING/dur:.1f} req/s | {stats("landing")}')
     return dur
 
 # ---------------------------------------------------------------- login pool
@@ -109,7 +122,7 @@ def payload(i, k, token):
 
 codes = []
 def s3(pool):
-    print('S3 posting titipan: 30 user x 2 POST /requests')
+    print(f'S3 posting titipan: {N_POSTERS} user x 2 POST /requests')
     lock_codes = []
     def post_one(i, k):
         s, t = pool[i]
@@ -122,14 +135,15 @@ def s3(pool):
         timed('post_request', fn)
     t0 = time.perf_counter()
     with ThreadPoolExecutor(20) as ex:
-        futs = [ex.submit(post_one, i, k) for i in list(pool)[:30] for k in (1, 2)]
+        futs = [ex.submit(post_one, i, k) for i in list(pool)[:N_POSTERS] for k in (1, 2)]
         for f in as_completed(futs): f.result()
     dur = time.perf_counter() - t0
     codes.extend(lock_codes)
-    print(f'  selesai {dur:.1f}s, {len(lock_codes)}/60 order dibuat | {stats("post_request")}')
+    print(f'  selesai {dur:.1f}s, {len(lock_codes)}/{N_POSTERS*2} order dibuat | {stats("post_request")}')
 
 # ---------------------------------------------------------------- S4 claim race
-def s4(pool, rounds=5, racers=10):
+def s4(pool, rounds=None, racers=None):
+    rounds = rounds or N_ROUNDS; racers = racers or N_RACERS
     print(f'S4 claim race: {racers} relawan rebutan 1 titipan x {rounds} ronde')
     ids = list(pool)
     out = []
@@ -153,9 +167,11 @@ def s4(pool, rounds=5, racers=10):
 
 # ---------------------------------------------------------------- run
 summary = {}
+print(f'Target : {BASE}')
+print(f'Skala  : {SCALE:g}x (landing {N_LANDING}/{N_CONN} koneksi, {N_USERS} user, {N_POSTERS} poster, race {N_RACERS}x{N_ROUNDS})' + chr(10))
 warm = requests.get(BASE + '/', timeout=60); print('warmup', warm.status_code)
 d1 = s1()
-pool = build_pool(range(1, 41))
+pool = build_pool(range(1, N_USERS + 1))
 s2(pool)
 s3(pool)
 race = s4(pool)
@@ -163,8 +179,9 @@ summary = dict(
     base=BASE, when=datetime.now().isoformat(timespec='seconds'),
     landing=stats('landing'), browse=stats('browse'),
     post_request=stats('post_request'), claim=stats('claim'),
-    landing_rps=round(300 / d1, 1), race=race,
+    scale=SCALE, landing_rps=round(N_LANDING / d1, 1), race=race,
     total_requests=len(results), total_errors=sum(1 for _, ok, *_ in results if not ok),
 )
 print(json.dumps(summary, indent=1))
-open('stress_results.json', 'w').write(json.dumps(summary, indent=1))
+open(RESULTS_FILE, 'w').write(json.dumps(summary, indent=1))
+print(chr(10) + 'Hasil disimpan ke', RESULTS_FILE)
