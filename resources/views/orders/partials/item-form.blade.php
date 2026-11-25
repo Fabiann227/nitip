@@ -63,16 +63,16 @@
             </div>
             <template x-for="(row, index) in rows" :key="index">
                 <div class="grid grid-cols-12 gap-2 p-3 rounded-xl bg-surface-low">
-                    <div class="col-span-12 sm:col-span-5">
+                    <div class="col-span-12 sm:col-span-4">
                         <input type="text" :name="`items[${index}][name]`" x-model="row.name" placeholder="Nama item" class="input input-sm" maxlength="120">
                     </div>
                     <div class="col-span-4 sm:col-span-2">
                         <input type="number" :name="`items[${index}][quantity]`" x-model="row.quantity" min="1" max="99" placeholder="Qty" class="input input-sm" aria-label="Jumlah">
                     </div>
                     <div class="col-span-8 sm:col-span-3">
-                        <input type="number" :name="`items[${index}][estimated_price]`" x-model="row.estimated_price" min="0" step="500" placeholder="Perkiraan harga (Rp)" class="input input-sm" aria-label="Perkiraan harga satuan">
+                        <input type="number" :name="`items[${index}][estimated_price]`" x-model="row.estimated_price" min="0" step="500" placeholder="Harga (Rp)" class="input input-sm" aria-label="Perkiraan harga satuan">
                     </div>
-                    <div class="col-span-10 sm:col-span-1 flex items-center">
+                    <div class="col-span-10 sm:col-span-2 flex items-center">
                         <input type="text" :name="`items[${index}][note]`" x-model="row.note" placeholder="Catatan" class="input input-sm" maxlength="255" aria-label="Catatan item">
                     </div>
                     <div class="col-span-2 sm:col-span-1 flex items-center justify-end">

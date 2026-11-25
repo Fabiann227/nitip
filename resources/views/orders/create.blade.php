@@ -16,9 +16,9 @@
         </form>
 
         <aside class="space-y-4">
-            <x-ui.card title="Bagaimana kelanjutannya?" icon="help">
+            <x-ui.card title="Yang terjadi setelah kamu posting" icon="help">
                 <ol class="space-y-3 text-sm text-on-surface-variant">
-                    <li class="flex gap-2"><span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>Permintaan tayang di feed kampusmu. Relawan yang searah meng-<em>claim</em>.</li>
+                    <li class="flex gap-2"><span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0">1</span>Permintaan kamu langsung tayang di feed kampus. Relawan yang kebetulan searah bisa mengambilnya.</li>
                     <li class="flex gap-2"><span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>Kamu transfer biaya jasa + perkiraan barang langsung ke relawan, upload bukti.</li>
                     <li class="flex gap-2"><span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0">3</span>Relawan membeli/mencetak, mengantar, dan melampirkan struk riil.</li>
                     <li class="flex gap-2"><span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0">4</span>Sebutkan PIN 4 digit saat serah terima, selisih nota diselesaikan di tempat.</li>
