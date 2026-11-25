@@ -28,23 +28,36 @@
             <x-ui.confirm-form :action="route('orders.claim', $order)" title="Ambil titipan ini?" :message="'Pastikan kamu memang searah ke '.$order->pickup_location.' dan bisa mengantar ke '.$order->dropoff_location.($order->needed_by ? ' sebelum '.$order->needed_by->translatedFormat('H:i') : '').'.'" confirm="Ya, saya ambil" button-class="btn btn-primary w-full sm:w-auto" icon="handshake">Ambil titipan (+{{ rupiah($order->service_fee) }})</x-ui.confirm-form>
         @endif
 
-        <div class="flex flex-wrap gap-2">
+        <div class="space-y-2">
+            {{-- Bukti transfer yang perlu dicek relawan --}}
             @if (in_array('verify', $actions))
-                <div class="w-full mb-2 p-3 rounded-xl bg-white border border-border flex items-center gap-3">
-                    <a href="{{ $order->fileUrl('proof') }}" target="_blank"><img src="{{ $order->fileUrl('proof') }}" alt="Bukti" class="w-16 h-16 rounded-lg object-cover border border-border"></a>
-                    <div class="text-sm min-w-0 flex-1"><p class="font-semibold">Cek mutasi masuk {{ rupiah($order->estimatedTotal()) }}</p><p class="text-xs text-on-surface-variant">ke {{ $order->payment_method }} &bull; {{ $order->payment_submitted_at?->diffForHumans() }}</p>@if($order->payment_note)<p class="text-xs text-muted">Catatan: {{ $order->payment_note }}</p>@endif</div>
-                    <a href="{{ $order->fileUrl('proof') }}" target="_blank" class="btn btn-xs btn-outline">Lihat</a>
+                <div class="p-3 rounded-xl bg-white border border-border">
+                    <div class="flex items-start gap-3">
+                        <a href="{{ $order->fileUrl('proof') }}" target="_blank" class="shrink-0">
+                            <img src="{{ $order->fileUrl('proof') }}" alt="Bukti transfer" class="w-14 h-14 sm:w-16 sm:h-16 rounded-lg object-cover border border-border">
+                        </a>
+                        <div class="text-sm min-w-0 flex-1">
+                            <p class="font-semibold leading-snug">Cek mutasi masuk {{ rupiah($order->estimatedTotal()) }}</p>
+                            <p class="text-xs text-on-surface-variant mt-0.5 break-words">ke {{ $order->payment_method }}</p>
+                            <p class="text-xs text-muted mt-0.5">{{ $order->payment_submitted_at?->diffForHumans() }}</p>
+                            @if ($order->payment_note)<p class="text-xs text-muted mt-0.5 break-words">Catatan: {{ $order->payment_note }}</p>@endif
+                        </div>
+                        <a href="{{ $order->fileUrl('proof') }}" target="_blank" class="btn btn-xs btn-outline shrink-0">Lihat</a>
+                    </div>
                 </div>
-                <x-ui.confirm-form :action="route('orders.payment.verify', $order)" title="Konfirmasi dana sudah masuk?" message="Verifikasi hanya jika saldo/mutasi kamu benar-benar bertambah sesuai jumlah. Setelah ini pesanan berstatus dibayar." confirm="Ya, dana masuk" button-class="btn btn-primary" icon="verified">Verifikasi pembayaran</x-ui.confirm-form>
-                <x-ui.confirm-form :action="route('orders.payment.reject', $order)" title="Tolak bukti pembayaran" message="Penitip akan diminta mengupload ulang bukti yang benar." confirm="Tolak bukti" variant="danger" reason reason-label="Alasan penolakan" reason-placeholder="Contoh: nominal tidak sesuai / mutasi belum masuk" button-class="btn btn-danger-soft" icon="block">Tolak</x-ui.confirm-form>
+            @endif
+
+            {{-- Aksi utama: mendorong pesanan maju ke tahap berikutnya --}}
+            @if (in_array('verify', $actions))
+                <x-ui.confirm-form :action="route('orders.payment.verify', $order)" title="Konfirmasi dana sudah masuk?" message="Verifikasi hanya jika saldo/mutasi kamu benar-benar bertambah sesuai jumlah. Setelah ini pesanan berstatus dibayar." confirm="Ya, dana masuk" button-class="btn btn-primary w-full sm:w-auto" icon="verified">Verifikasi pembayaran</x-ui.confirm-form>
             @endif
 
             @if (in_array('start', $actions))
-                <form method="POST" action="{{ route('orders.start', $order) }}">@csrf<x-ui.button type="submit" icon="shopping_cart_checkout">{{ $order->category->isPrint() ? 'Mulai mencetak' : 'Mulai membeli' }}</x-ui.button></form>
+                <form method="POST" action="{{ route('orders.start', $order) }}">@csrf<x-ui.button type="submit" icon="shopping_cart_checkout" class="w-full sm:w-auto">{{ $order->category->isPrint() ? 'Mulai mencetak' : 'Mulai membeli' }}</x-ui.button></form>
             @endif
 
             @if (in_array('deliver', $actions))
-                <button type="button" class="btn btn-primary" x-on:click="$dispatch('open-modal', 'deliver')"><span class="material-symbols-outlined text-[18px]">directions_walk</span>Sudah dibeli, antar sekarang</button>
+                <button type="button" class="btn btn-primary w-full sm:w-auto" x-on:click="$dispatch('open-modal', 'deliver')"><span class="material-symbols-outlined text-[18px]">directions_walk</span>Sudah dibeli, antar sekarang</button>
                 <x-ui.modal name="deliver" title="Catat harga riil & antar" :open-on-error="$errors->hasAny(['actual_item_cost', 'receipt'])">
                     <form method="POST" action="{{ route('orders.deliver', $order) }}" enctype="multipart/form-data" class="space-y-4">
                         @csrf
@@ -59,7 +72,7 @@
             @endif
 
             @if (in_array('delivered', $actions))
-                <button type="button" class="btn btn-primary" x-on:click="$dispatch('open-modal', 'delivered')"><span class="material-symbols-outlined text-[18px]">handshake</span>Tandai sudah diserahkan</button>
+                <button type="button" class="btn btn-primary w-full sm:w-auto" x-on:click="$dispatch('open-modal', 'delivered')"><span class="material-symbols-outlined text-[18px]">handshake</span>Tandai sudah diserahkan</button>
                 <x-ui.modal name="delivered" title="Serah terima" :open-on-error="$errors->hasAny(['note']) || ($errors->has('receipt') && $order->status === OrderStatus::Delivering)">
                     <form method="POST" action="{{ route('orders.delivered', $order) }}" enctype="multipart/form-data" class="space-y-4">
                         @csrf
@@ -81,9 +94,9 @@
 
             @if (in_array('complete', $actions))
                 @if ($isRequester)
-                    <x-ui.confirm-form :action="route('orders.complete', $order)" title="Konfirmasi pesanan diterima?" message="Pastikan barang/hasil cetak sudah di tanganmu dan selisih nota sudah diselesaikan. Setelah ini transaksi ditutup." confirm="Ya, sudah saya terima" button-class="btn btn-primary" icon="task_alt">Konfirmasi diterima &amp; selesaikan</x-ui.confirm-form>
+                    <x-ui.confirm-form :action="route('orders.complete', $order)" title="Konfirmasi pesanan diterima?" message="Pastikan barang/hasil cetak sudah di tanganmu dan selisih nota sudah diselesaikan. Setelah ini transaksi ditutup." confirm="Ya, sudah saya terima" button-class="btn btn-primary w-full sm:w-auto" icon="task_alt">Konfirmasi diterima &amp; selesaikan</x-ui.confirm-form>
                 @else
-                    <button type="button" class="btn btn-secondary" x-on:click="$dispatch('open-modal', 'complete-pin')"><span class="material-symbols-outlined text-[18px]">pin</span>Selesaikan dengan PIN</button>
+                    <button type="button" class="btn btn-secondary w-full sm:w-auto" x-on:click="$dispatch('open-modal', 'complete-pin')"><span class="material-symbols-outlined text-[18px]">pin</span>Selesaikan dengan PIN</button>
                     <x-ui.modal name="complete-pin" title="Masukkan PIN penitip" max-width="sm" :open-on-error="$errors->has('pin')">
                         <form method="POST" action="{{ route('orders.complete', $order) }}" class="space-y-5">
                             @csrf
@@ -95,12 +108,23 @@
                 @endif
             @endif
 
-            @if (in_array('release', $actions))
-                <x-ui.confirm-form :action="route('orders.release', $order)" title="Lepas titipan ini?" message="Permintaan akan kembali tayang untuk relawan lain. Gunakan hanya jika kamu benar-benar tidak bisa membantu." confirm="Lepas titipan" variant="danger" reason reason-label="Alasan (dikirim ke penitip)" button-class="btn btn-outline" icon="undo">Lepas titipan</x-ui.confirm-form>
+            {{-- Aksi mundur: mengembalikan pesanan ke tahap sebelumnya, pesanan tetap hidup --}}
+            @if (in_array('verify', $actions) || in_array('release', $actions))
+                <div class="flex gap-2">
+                    @if (in_array('verify', $actions))
+                        <x-ui.confirm-form :action="route('orders.payment.reject', $order)" title="Tolak bukti pembayaran" message="Pesanan tetap berjalan. Penitip diminta mengupload ulang bukti yang benar, lalu kamu cek lagi." confirm="Tolak bukti" variant="danger" reason reason-label="Alasan penolakan" reason-placeholder="Contoh: nominal tidak sesuai / mutasi belum masuk" button-class="btn btn-danger-soft flex-1 sm:flex-none" icon="block">Tolak bukti</x-ui.confirm-form>
+                    @endif
+                    @if (in_array('release', $actions))
+                        <x-ui.confirm-form :action="route('orders.release', $order)" title="Lepas titipan ini?" message="Kamu mundur sebagai relawan, tetapi permintaan penitip tetap hidup dan kembali tayang untuk relawan lain. Gunakan hanya jika kamu benar-benar tidak bisa membantu." confirm="Lepas titipan" variant="danger" reason reason-label="Alasan (dikirim ke penitip)" button-class="btn btn-outline flex-1 sm:flex-none" icon="undo">Lepas titipan</x-ui.confirm-form>
+                    @endif
+                </div>
             @endif
 
+            {{-- Aksi terminal: menutup pesanan untuk kedua pihak --}}
             @if (in_array('cancel', $actions))
-                <x-ui.confirm-form :action="route('orders.cancel', $order)" title="Batalkan pesanan?" :message="in_array($order->status, [OrderStatus::Paid, OrderStatus::InProgress], true) ? 'Pembayaran sudah diverifikasi. Membatalkan sekarang berarti kamu WAJIB mengembalikan dana ke penitip dan tercatat di audit trail.' : 'Pesanan akan dibatalkan dan pihak lain diberi tahu.'" confirm="Batalkan pesanan" variant="danger" reason reason-label="Alasan pembatalan" button-class="btn btn-ghost text-error" icon="cancel">Batalkan</x-ui.confirm-form>
+                <div class="pt-2 mt-1 border-t border-border/70">
+                    <x-ui.confirm-form :action="route('orders.cancel', $order)" title="Batalkan pesanan?" :message="in_array($order->status, [OrderStatus::Paid, OrderStatus::InProgress], true) ? 'Pesanan ditutup untuk kedua pihak dan tidak bisa dilanjutkan lagi. Pembayaran sudah diverifikasi, jadi kamu WAJIB mengembalikan dana ke penitip dan ini tercatat di audit trail.' : 'Pesanan ditutup untuk kedua pihak dan tidak bisa dilanjutkan lagi. Pihak lain akan diberi tahu.'" confirm="Batalkan pesanan" variant="danger" reason reason-label="Alasan pembatalan" button-class="btn btn-ghost text-error w-full sm:w-auto" icon="cancel">Batalkan pesanan</x-ui.confirm-form>
+                </div>
             @endif
         </div>
     </x-ui.card>
