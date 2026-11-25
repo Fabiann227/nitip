@@ -31,7 +31,7 @@ class OrderPolicy
     {
         return $order->isFulfiller($user)
             && $order->isRequest()
-            && in_array($order->status, [OrderStatus::AwaitingPayment, OrderStatus::PaymentSubmitted], true);
+            && $order->status === OrderStatus::AwaitingPayment;
     }
 
     public function pay(User $user, Order $order): bool
@@ -83,11 +83,11 @@ class OrderPolicy
         }
 
         if ($order->isRequester($user)) {
-            return in_array($order->status, [OrderStatus::Open, OrderStatus::AwaitingPayment, OrderStatus::PaymentSubmitted], true);
+            return in_array($order->status, [OrderStatus::Open, OrderStatus::AwaitingPayment], true);
         }
 
         if ($order->isFulfiller($user)) {
-            return in_array($order->status, [OrderStatus::AwaitingPayment, OrderStatus::PaymentSubmitted, OrderStatus::Paid, OrderStatus::InProgress], true);
+            return in_array($order->status, [OrderStatus::AwaitingPayment, OrderStatus::Paid, OrderStatus::InProgress], true);
         }
 
         return false;

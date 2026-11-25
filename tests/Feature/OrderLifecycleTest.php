@@ -242,9 +242,21 @@ class OrderLifecycleTest extends TestCase
     }
 
     #[Test]
-    public function fulfiller_can_release_a_claimed_request_back_to_the_feed(): void
+    public function release_and_cancel_are_closed_while_payment_proof_awaits_verification(): void
     {
         $order = $this->orderAt(OrderStatus::PaymentSubmitted);
+
+        $this->actingAs($order->fulfiller)->post(route('orders.release', $order), ['reason' => 'Hujan deras'])->assertForbidden();
+        $this->actingAs($order->fulfiller)->post(route('orders.cancel', $order), ['reason' => 'Berubah pikiran'])->assertForbidden();
+        $this->actingAs($order->requester)->post(route('orders.cancel', $order), ['reason' => 'Berubah pikiran'])->assertForbidden();
+
+        $this->assertSame(OrderStatus::PaymentSubmitted, $order->fresh()->status);
+    }
+
+    #[Test]
+    public function fulfiller_can_release_a_claimed_request_back_to_the_feed(): void
+    {
+        $order = $this->orderAt(OrderStatus::AwaitingPayment);
 
         $this->actingAs($order->fulfiller)->post(route('orders.release', $order), ['reason' => 'Hujan deras'])->assertRedirect();
 

@@ -72,8 +72,8 @@ class OrderWorkflowService
         return DB::transaction(function () use ($order, $fulfiller, $reason) {
             $order = $this->lock($order);
 
-            $this->assertStatus($order, [OrderStatus::AwaitingPayment, OrderStatus::PaymentSubmitted],
-                'Pesanan tidak bisa dilepas pada tahap ini.');
+            $this->assertStatus($order, [OrderStatus::AwaitingPayment],
+                'Bukti pembayaran sedang menunggu keputusanmu. Verifikasi jika dana masuk, atau tolak dulu buktinya sebelum melepas titipan.');
 
             if (! $order->isRequest()) {
                 throw new NitipException('Pesanan dari rute hanya bisa dibatalkan, bukan dilepas.');
@@ -363,7 +363,7 @@ class OrderWorkflowService
             $this->assertStatus($order, $allowed, 'Pesanan tidak bisa dibatalkan pada tahap ini. Gunakan fitur komplain jika ada masalah.');
 
             $from = $order->status;
-            $needsRefund = in_array($from, [OrderStatus::Paid, OrderStatus::InProgress, OrderStatus::Delivering, OrderStatus::Delivered, OrderStatus::Disputed], true);
+            $needsRefund = in_array($from, [OrderStatus::PaymentSubmitted, OrderStatus::Paid, OrderStatus::InProgress, OrderStatus::Delivering, OrderStatus::Delivered, OrderStatus::Disputed], true);
 
             $order->forceFill([
                 'status' => OrderStatus::Cancelled,
