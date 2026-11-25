@@ -12,6 +12,8 @@ DEFAULT_BASE = 'https://nitip.76-13-22-7.sslip.io'
 BASE = (sys.argv[1] if len(sys.argv) > 1 and sys.argv[1].startswith('http')
         else os.environ.get('NITIP_BASE', DEFAULT_BASE)).rstrip('/')
 SCALE = float(os.environ.get('NITIP_SCALE', '1'))
+# NITIP_ONLY=race -> lewati skenario baca (S1/S2), langsung ke pembuktian lock. Cocok untuk demo live.
+ONLY = os.environ.get('NITIP_ONLY', 'all').lower()
 sc = lambda n, lo=1: max(lo, int(round(n * SCALE)))
 N_LANDING, N_CONN = sc(300, 10), sc(30, 2)      # S1
 N_USERS = sc(40, 4)                              # pool login
@@ -170,16 +172,25 @@ summary = {}
 print(f'Target : {BASE}')
 print(f'Skala  : {SCALE:g}x (landing {N_LANDING}/{N_CONN} koneksi, {N_USERS} user, {N_POSTERS} poster, race {N_RACERS}x{N_ROUNDS})' + chr(10))
 warm = requests.get(BASE + '/', timeout=60); print('warmup', warm.status_code)
-d1 = s1()
+if ONLY == 'race':
+    print('Mode   : race saja (S1 & S2 dilewati)' + chr(10))
+d1 = s1() if ONLY != 'race' else None
 pool = build_pool(range(1, N_USERS + 1))
-s2(pool)
+if ONLY != 'race':
+    s2(pool)
 s3(pool)
 race = s4(pool)
+if race:
+    menang = [r for r in race if r['winners'] == 1]
+    print(chr(10) + '=' * 58)
+    print(f"PEMBUKTIAN LOCK: {len(menang)}/{len(race)} ronde menghasilkan TEPAT 1 pemenang")
+    print('VERDIKT: LULUS' if len(menang) == len(race) else 'VERDIKT: GAGAL (ada race condition!)')
+    print('=' * 58)
 summary = dict(
     base=BASE, when=datetime.now().isoformat(timespec='seconds'),
     landing=stats('landing'), browse=stats('browse'),
     post_request=stats('post_request'), claim=stats('claim'),
-    scale=SCALE, landing_rps=round(N_LANDING / d1, 1), race=race,
+    scale=SCALE, mode=ONLY, landing_rps=round(N_LANDING / d1, 1) if d1 else None, race=race,
     total_requests=len(results), total_errors=sum(1 for _, ok, *_ in results if not ok),
 )
 print(json.dumps(summary, indent=1))
